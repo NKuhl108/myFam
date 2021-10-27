@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <h2><p id="imageName"></p></h2><br>
+        <img id="imagePlaceholder" src="" width=500px><br>
+        <h2><p id="imageDescription"></p></h2>
+</div>
+    
+    {{>footer}}
+        <script src="/js/displayImage.js">
+        
+    </script>
+    <script language="javascript">
+        loadImage("{{imageId}}");
+    </script>
+</body>
+
+</html>

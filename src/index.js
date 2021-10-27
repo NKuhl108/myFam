@@ -2,9 +2,16 @@ const express = require('express')
 require('./db/mongoose')
 const hbs = require('hbs')
 const path = require('path')
-
 const userRouter = require('./routers/user')
 const messageRouter = require('./routers/message')
+const imageRouter = require('./routers/image')
+var fs = require('fs');
+var Image = require('./models/image');
+
+const auth = require('./middleware/auth')
+
+
+
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -22,6 +29,24 @@ app.use(express.static(publicDirectoryPath))
 app.use(express.json())
 app.use(userRouter)
 app.use(messageRouter)
+app.use(imageRouter)
+
+app.get('/sendImage', (req, res) => {
+    res.render('sendImage', {
+        title: 'Send Image',
+        name: 'Nirmala Kuhl'
+    })
+})
+
+app.get('/displayImage/:id', (req, res) => {
+    const _id = req.params.id
+    res.render('displayImage', {
+        title: 'Display Image',
+        imageId: _id,
+        name: 'Nirmala Kuhl'
+    })
+})
+//////////////
 
 
 app.get('', (req, res) => {
@@ -30,6 +55,7 @@ app.get('', (req, res) => {
         name: 'Nirmala Kuhl'
     })
 })
+
 
 
 app.get('/register', (req, res) => {
@@ -61,9 +87,15 @@ app.get('/showMessage/:id', async (req, res) => {
 })
 
 
+app.get('/imageList', (req, res) => {
+    res.render('imageList', {
+        title: 'MessageList',
+        name: 'Nirmala Kuhl'
+    })
+})
+
 app.get('/messageList', (req, res) => {
     res.render('messageList', {
-        helpText: 'This is some helpful text.',
         title: 'MessageList',
         name: 'Nirmala Kuhl'
     })

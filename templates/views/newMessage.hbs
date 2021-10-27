@@ -13,20 +13,47 @@
         <form>
             <table>
                 <tr>
-                     <td>Recipient: </select></td>   
+                     <td>Recipient: </select>
+                     </td>   
+                
+                
+                    <td>
+                         <select name="friends" id="friendEmails"></select>
+                    </td>  
+                </tr> 
+                <tr>
+                     <td>
+                         Subject:
+                     </td> 
+                     <td>
+                         <input id="subjectInput" placeholder="Subject">
+                     </td>   
                 </tr>
                 <tr>
-                     <td><select name="friends" id="friendEmails"></select></td>   
+                     <td>
+                         Content:
+                     </td> 
+                     <td>
+                         <textarea id="contentInput" name="" rows="4" cols="50" placeholder="Message"></textarea>
+                     </td>   
+                </tr>
+                <tr>
+                     <td>
+                         
+                     </td> 
+                     <td>
+                         <button>Send Message</button>
+                     </td>   
                 </tr>
             </table>
             
         </select>
             <br>
-            <input id="subjectInput" placeholder="Subject">
+            
             <br>
-            <textarea id="contentInput" name="" rows="4" cols="50" placeholder="Message"></textarea>
+            
             <br>
-            <button>Send Message</button>
+            
         </form>
         <p id="message-1"></p>
         

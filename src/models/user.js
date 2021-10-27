@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Message = require('./message')
+const Image = require('./image')
 
 
 const userSchema = new mongoose.Schema({
@@ -57,6 +58,11 @@ userSchema.virtual('messages', {
     foreignField: 'recipient'
 })
 
+userSchema.virtual('images', {
+    ref: 'Image',
+    localField: '_id',
+    foreignField: 'recipient'
+})
 // userSchema.virtual('friendObjects', {
 //     ref: 'User',
 //     localField: '_id',
