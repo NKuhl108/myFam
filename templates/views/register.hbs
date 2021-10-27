@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <form>
+        <table>
+            <tr>
+                <td>
+                    Name:
+                </td>
+                <td>
+                    <input id="nameinput" placeholder="Name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Email:
+                </td>
+                <td>
+                    <input id="emailinput" placeholder="Email">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Password:
+                </td>
+                <td>
+                    <input id="passwordinput" type=password placeholder="Password">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Inmate:
+                </td>
+                <td>
+                    <input type="checkbox" id="inmate"  checked="checked">
+                </td>
+            </tr>
+                <td>
+                    
+                </td>
+                <td>
+                    <button>Register</button>
+                </td>
+            </tr>
+        </table>
+        </form>
+
+
+
+        <p id="message-1"></p>
+
+    </div>
+
+    {{>footer}}
+
+    <script src="/js/register.js"></script>
+</body>
+
+</html>

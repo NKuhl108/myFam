@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Single Message</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <form id='form'>
+            <table>
+                <tr>
+                     <td>Recipient: </select></td>   
+               
+                     <td><select name="friends" id="friendEmails"></select></td>   
+                </tr>
+                <tr>
+                     <td>Subject: </select></td>   
+               
+                     <td><input id="subjectInput" placeholder="Subject"></select></td>   
+                </tr>
+                <tr>
+                     <td>Message: </select></td>   
+               
+                     <td><textarea id="contentInput" name="" rows="4" cols="50" placeholder="Message"></textarea></td>   
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <div class="input-group">
+                        <input id='files' type="file" multiple>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="submit-btn" type='submit'>Send Message</button>
+                    </td>
+                </tr>
+                
+            </table>
+   
+            
+            
+            
+
+        </form>
+
+        <p id="message-1"></p>
+        
+    </div>
+    {{>footer}}
+    <script src="/js/pictureMessage.js">
+    </script>
+
+</body>
+
+</html>

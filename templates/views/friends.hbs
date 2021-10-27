@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Friends</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <p>{{helpText}}</p>
+
+        <form id="addForm">
+            <input id="friendEmailInput" placeholder="New Friend Email">
+            <button>Add Friend</button>
+        </form>
+        <p id="messageArea"></p>
+
+        <form id="refreshForm">
+            <button>Refresh</button>
+        </form>
+
+        <p id="messageArea"></p>
+
+
+    <table id="myDynamicTable"  border="1" cellpadding="2">
+    </table>
+
+
+    </div>
+
+    {{>footer}}
+
+    <script src="/js/friends.js"></script>
+</body>
+
+</html>

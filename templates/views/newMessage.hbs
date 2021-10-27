@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Single Message</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        <form>
+            <table>
+                <tr>
+                     <td>Recipient: </select></td>   
+                </tr>
+                <tr>
+                     <td><select name="friends" id="friendEmails"></select></td>   
+                </tr>
+            </table>
+            
+        </select>
+            <br>
+            <input id="subjectInput" placeholder="Subject">
+            <br>
+            <textarea id="contentInput" name="" rows="4" cols="50" placeholder="Message"></textarea>
+            <br>
+            <button>Send Message</button>
+        </form>
+        <p id="message-1"></p>
+        
+    </div>
+    {{>footer}}
+    <script src="/js/newMessage.js">
+    </script>
+
+</body>
+
+</html>
