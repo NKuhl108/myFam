@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
+//now use this environment variable. set in my local .env file as well as on heroku
 mongoose.connect(process.env.MONGODB_URL, {
-//mongoose.connect('mongodb+srv://myfam:T!hisismydatabasepassword789@cluster0.qphw2.mongodb.net/my-fam-db', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false
