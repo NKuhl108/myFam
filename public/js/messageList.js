@@ -35,10 +35,8 @@ function clearTable() {
 
 }
 function refreshMessages() { 
-    console.log( localStorage );
         const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
-    console.log( inMemoryToken );
     fetch('/messages',{
         method: "GET",
         headers: {  
@@ -48,18 +46,10 @@ function refreshMessages() {
       })
         .then( res => res.json() )
             .then( res => {
-                console.log('logging res now:')
-                console.log( res );
 
                 messageArea.textContent =''
                 clearTable()
                 res.forEach(element => {
-                    console.log('trying to log sende')
-                    console.log(element.sendername)
-
-
-                    console.log('trying to add message link' + element.id)
-                    console.log(element)
                     addMessageLink(element._id,element.subject,element.authorName)
                 })
                 if (res.length == 0){

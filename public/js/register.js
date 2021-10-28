@@ -13,8 +13,6 @@ registerForm.addEventListener('submit', (e) => {
     const passwd = password.value
     const username = usernameInput.value
     const inmateStatus = inmateCheckbox.checked
-    console.log('inmate here')
-    console.log(inmateStatus)
     messageOne.textContent = 'Loading...'
 
     fetch('/users',{
@@ -34,16 +32,11 @@ registerForm.addEventListener('submit', (e) => {
       
         .then( res => res.json() )
             .then( res => {
-                console.log(res)
                 if (!res.user){
                     messageOne.textContent ="Error registering user"
                 }
                 else{
-                    console.log('logging res now:')
-                    console.log( res );
                     let inMemoryToken = res.token;
-                    console.log('logging token now:')
-                    console.log(inMemoryToken)
                     messageOne.textContent ='User ' + ' successfully registered!'
                     localStorage.setItem('user', JSON.stringify(res));
                     email.value=''

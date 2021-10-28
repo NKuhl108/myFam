@@ -22,10 +22,7 @@ function addContent(newData) {
 }
 
 function setimage(image) { 
-    // needs to be 
-    console.log('now setting image')
     const newpath = '/'+image.path.replace('public\\', '')
-    console.log(newpath)
     imageArea.src=newpath
 }
 
@@ -37,8 +34,6 @@ function clearTable() {
     }
 }
 function loadMessage(messageId) {    
-    console.log('Fetching Message' + messageId) 
-
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
 
@@ -51,9 +46,6 @@ function loadMessage(messageId) {
       })
         .then( res => res.json() )
             .then( res => {
-                console.log('logging res now:')
-                console.log( res );
-                //console.log( res.image.path );
                 addSubject(res.subject)
                 addContent(res.content)  
                 if (res.image){

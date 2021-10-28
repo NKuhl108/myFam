@@ -57,11 +57,6 @@ sendImageForm.addEventListener('submit', (e) => {
     const file = formImage.files[0]
 
 
-    console.log(file)
-
-    console.log('---------------------------')
-
-
     const formData = new FormData()
     formData.append('name', formName.value)
     formData.append('desc', formDescription.value)
@@ -77,7 +72,7 @@ sendImageForm.addEventListener('submit', (e) => {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
+        console.log('sendImage')
       })
       .catch(error => {
         console.log(error)
@@ -85,40 +80,6 @@ sendImageForm.addEventListener('submit', (e) => {
 
 
 
-    // var data = new FormData()
-    // data.append('name', 'test')
-    // data.append('desc', 'hubot')
-    // data.append('file',formImage.files[0])
-    
-
-    // fetch('/sendImage',{
-    //     method: "POST",
-    //     body: data,
-    //     headers: {  
-    //         'Content-Type': 'multipart/form-data; boundary=—-WebKitFormBoundaryfgtsKTYLsT7PNUVD',
-    //         'Authorization': 'Bearer ' + inMemoryToken
-    //     }
-
-    //   })
-      
-      
-    //     .then( res => res.json() )
-    //         .then( res => {
-    //             console.log('addddsdf')
-    //             // if (!res.error){
-    //             //     messageOne.textContent = 'Message sent successfully!'
-
-    //             //     recipientEmailInput.value=''
-    //             //     subjectInput.value=''
-    //             //     contentInput.value=''
-
-    //             // }
-    //             // else{
-    //             //     messageOne.textContent =res.error
-
-    //             // }
-
-    //         })
 
 })
 

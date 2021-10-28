@@ -40,15 +40,11 @@ function populateFriendList() {
 }
 newMessageForm.addEventListener('submit', (e) => {
     e.preventDefault()
-
     const recipientEmail = emailDropDown.value
-    console.log(recipientEmail)
     const subject= subjectInput.value
     const content = contentInput.value
-    
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
-
     
     fetch('/messages',{
         method: "POST",

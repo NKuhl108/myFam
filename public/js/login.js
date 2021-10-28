@@ -30,11 +30,7 @@ loginForm.addEventListener('submit', (e) => {
                     messageOne.textContent ='Error logging in'
                 }
                 else{
-                    console.log('logging res now:')
-                    console.log( res );
                     let inMemoryToken = res.token;
-                    console.log('logging token now:')
-                    console.log(inMemoryToken)
                     messageOne.textContent ='User ' + ' successfully logged in!'
                     email.value=''
                     password.value=''

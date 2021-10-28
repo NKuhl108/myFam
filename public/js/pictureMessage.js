@@ -55,21 +55,14 @@ function submitForm(e) {
     formData.append("content", contentInput.value);
 
 
-
-
-
-    console.log(localstorage_user.user._id)
     formData.append("owner", localstorage_user.user._id);
     formData.append("files", "");
     for(let i =0; i < files.files.length; i++) {
-        console.log('appending file')
-        console.log(files.files[i])
             formData.append("files", files.files[i]);
     }
     
     if (files.files.length==0){
         const recipientEmail = emailDropDown.value
-        console.log(recipientEmail)
         const subject= subjectInput.value
         const content = contentInput.value
         const localstorage_user = JSON.parse(localStorage.getItem('user'))
@@ -112,7 +105,7 @@ function submitForm(e) {
             method: 'post',
             body: formData
         })
-            .then((res) => console.log(res))
+            .then((res) => console.log('upload_files'))
             .catch((err) => ("Error occured", err));
     }
 

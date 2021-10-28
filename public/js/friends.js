@@ -35,7 +35,6 @@ function refreshFriends() {
         .then( res => res.json() )
             .then( res => {
                 res.forEach(element => {
-                    console.log(element)
                     addFriendLine(element._id,element.name,element.email)
                 })
 

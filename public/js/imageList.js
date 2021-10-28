@@ -35,10 +35,8 @@ function clearTable() {
 
 }
 function refreshImages() { 
-    console.log( localStorage );
         const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
-    console.log( inMemoryToken );
     fetch('/images',{
         method: "GET",
         headers: {  
@@ -48,18 +46,10 @@ function refreshImages() {
       })
         .then( res => res.json() )
             .then( res => {
-                console.log('logging res now:')
-                console.log( res );
 
                 messageArea.textContent =''
                 clearTable()
                 res.forEach(element => {
-                    console.log('trying to log sende')
-                    console.log(element.sendername)
-
-
-                    console.log('trying to add message link' + element.id)
-                    console.log(element)
                     addImageLink(element)
                 })
                 if (res.length == 0){

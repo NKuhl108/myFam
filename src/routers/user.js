@@ -5,8 +5,6 @@ const router = new express.Router()
 
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-    console.log(req.body)
     try {
         await user.save()
         const token = await user.generateAuthToken()
@@ -27,9 +25,6 @@ router.post('/users/addfriend', auth, async (req, res) => {
         }
 
         const requestedFriend = await User.findOne({email: req.body.email})
-        console.log('this is the req friend')
-        console.log(req.body.email)
-        console.log(requestedFriend)
         if (!requestedFriend.inmate){
             throw new Error()
         }
@@ -53,7 +48,6 @@ router.post('/users/addfriend', auth, async (req, res) => {
 
 })
 router.post('/users/login', async (req, res) => {
-    console.log('login attempt')
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
@@ -94,7 +88,6 @@ router.get('/users/me', auth, async (req, res) => {
 
 router.get('/users/friends', auth, async (req, res) => {
             await req.user.populate('friends').execPopulate()
-            console.log(req.user.friends[0])
             let returnList=[]
             //only return non-sensitive information
             req.user.friends.forEach(element => {

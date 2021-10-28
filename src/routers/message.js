@@ -5,10 +5,8 @@ const router = new express.Router()
 const User = require('../models/user')
 const multer = require('multer')
 router.post('/messages', auth, async (req, res) => {
-    console.log('trying to save message in /messages')
     try {
         const user = await User.findOne({ email: req.body.recipient })
-        console.log(user)
         const recipientID = user._id
 
         const message = new Message({
@@ -17,7 +15,6 @@ router.post('/messages', auth, async (req, res) => {
             owner: req.user._id,
             recipient:recipientID
         })
-        console.log(message)
 
         await message.save()
         res.send(message)
@@ -38,7 +35,6 @@ function execSequentially (arr, func) {
 const fetchAuthorname = async (message) => {
     try {
         const author = await User.findOne({_id: message.owner})
-        console.log(author.name)
         return author.name
     } catch (e) {
         res.status(401).send({ error: 'error' })
@@ -78,10 +74,6 @@ router.get('/messages/:id', auth, async (req, res) => {
 
     try {
         const message = await Message.findOne({ _id, recipient: req.user._id })
-        // const message = await Message.findOne({$or: [
-        //                                                 {recipient: req.user._id},
-        //                                                 {owner: req.user._id}
-        //                                             ]})
         
         if (!message) {
             return res.status(404).send()
@@ -136,21 +128,11 @@ const upload = multer({ dest: "public/uploads/" });
 
 
 const uploadFiles = async (req, res) => {
-    console.log('####################################################')
-    console.log('Message recipient:' + req.body.recipient)
-    console.log('Message subject:' + req.body.subject)
-    console.log('Message content:' + req.body.content)
-    console.log('Owner Id:' + req.body.owner)
-    console.log(req.files);
     
-    console.log('trying to save messages')
     try {
         
         const user = await User.findOne({ email: req.body.recipient })
         const recipientID = user._id
-        console.log('---------------------------------------------')
-        console.log('req.files')
-        console.log(req.files)
         const message = new Message({
             subject: req.body.subject,
             content: req.body.content,
@@ -159,8 +141,6 @@ const uploadFiles = async (req, res) => {
             image: {path: req.files[0].path}
         })
 
-
-        console.log(message)
         await message.save()
         res.send(message)
     } catch (e) {

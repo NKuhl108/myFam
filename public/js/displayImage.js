@@ -23,9 +23,7 @@ function addContent(newData) {
 }
 
 function setimage(image) { 
-    console.log('now setting image')
     const newpath = '/'+image.path.replace('public\\', '')
-    console.log(newpath)
     imageArea.src=newpath
 }
 
@@ -43,8 +41,6 @@ function toHexString(byteArray) {
   }
 function loadImage(imageId) {  
 
-    console.log('Fetching Image' + imageId) 
-
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
 
@@ -59,7 +55,6 @@ function loadImage(imageId) {
             .then( res => {
                 const finalsrc = "data:"+res.contentType+";base64,"+res.data
                 imagePlaceholder.src = finalsrc  
-                console.log(res) 
                 imageName.textContent =res.name
                 imageDescription.textContent = res.desc
                 
