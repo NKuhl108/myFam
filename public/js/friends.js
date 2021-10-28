@@ -10,13 +10,10 @@ function addFriendLine(friendID, friendName, friendEmail) {
     var table = document.getElementById("myDynamicTable");
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
-
-    //row.insertCell(0).innerHTML= '<a href=/showMessage/'+friendID+'>'+friendName+'</a>';
     row.insertCell(0).innerHTML= friendName
     row.insertCell(1).innerHTML= friendEmail
 
 
-    
 }
 function clearTable() { 
     var table = document.getElementById("myDynamicTable");
@@ -73,16 +70,7 @@ function addNewFriend() {
                     refreshFriends()
 
                 }
-                // messageArea.textContent =''
-                // res.forEach(element => {
-                //     console.log(element)
-                //     addFriendLine(element._id,element.name)
-                // })
-                
             })
-
-
-
 }
 
 refreshForm.addEventListener( "submit", ( e ) => {

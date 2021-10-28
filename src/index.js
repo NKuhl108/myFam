@@ -11,10 +11,8 @@ var Image = require('./models/image');
 const auth = require('./middleware/auth')
 
 
-
-
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT 
 
 const publicDirectoryPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
@@ -46,7 +44,7 @@ app.get('/displayImage/:id', (req, res) => {
         name: 'Nirmala Kuhl'
     })
 })
-//////////////
+
 
 
 app.get('', (req, res) => {
@@ -115,24 +113,6 @@ app.get('/pictureMessage', (req, res) => {
         name: 'Nirmala Kuhl'
     })
 })
-// const upload = multer({ dest: "uploads/" });
-
-// app.post("/upload_files", upload.array("files"), uploadFiles);
-
-// function uploadFiles(req, res) {
-//     console.log('asdfasdfasdfasdfasdfasdfasdfasdfasdf')
-//     console.log(req.body);
-//     console.log(req.files);
-//     res.send('asdf')
-//    // res.json({ message: "Successfully uploaded files" });
-// }
-
-
-// app.post("/upload_files", uploadFiles);
-// function uploadFiles(req, res) {
-//     console.log('asdfasdfasdfasdfasdfasdfasdfasdfasdf')
-//     console.log(req.body);
-// }
 
 
 

@@ -9,7 +9,6 @@ function addImageLink(image) {
     var table = document.getElementById("myDynamicTable");
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
-    //row.insertCell(0).innerHTML= image.name;
     row.insertCell(0).innerHTML= '<a href=/displayImage/'+image._id+'>'+image.name+'</a>';
     row.insertCell(1).innerHTML= 'by ' + image.authorName;
    
@@ -20,7 +19,7 @@ function addEmptyText() {
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
 
-    row.insertCell(0).innerHTML= 'There are no messages here';
+    row.insertCell(0).innerHTML= 'There are no pictures here';
    
 }
 function clearTable() { 

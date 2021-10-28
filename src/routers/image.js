@@ -57,27 +57,6 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
     });
 });
 
-// router.get('/displayImage/:id', (req, res) => {
-
-//     Image.find({}, (err, items) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(500).send('An error occurred', err);
-//         }
-//         else {
-//             console.log(items)
-
-//            // res.render('displayImage', { contentType: items[0].img.contentType, data: items[0].img.data.toString('base64')  });
-//         }
-//     });
-
-
-//     // res.render('displayImage', {
-//     //     title: 'Image',
-//     //     name: 'Nirmala Kuhl'
-//     // })
-// })
-
 // endpoint to return specific image based on id. with authentication
 router.get('/image/:id', auth, async (req, res) => {
     const _id = req.params.id
@@ -100,13 +79,6 @@ router.get('/image/:id', auth, async (req, res) => {
             name: image.name,
             desc: image.desc
         })
-
-        // res.writeHead(200, {
-        //     'Content-Type': mimetype,
-        //     'Content-disposition': 'attachment;filename=' + filename,
-        //     'Content-Length': data.length
-        // });
-        // res.end(Buffer.from(image, 'binary'));
 
     } catch (e) {
         res.status(500).send()

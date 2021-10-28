@@ -23,7 +23,6 @@ function addContent(newData) {
 }
 
 function setimage(image) { 
-    // needs to be 
     console.log('now setting image')
     const newpath = '/'+image.path.replace('public\\', '')
     console.log(newpath)
@@ -58,7 +57,6 @@ function loadImage(imageId) {
       })
         .then( res => res.json() )
             .then( res => {
-                //console.log(res)
                 const finalsrc = "data:"+res.contentType+";base64,"+res.data
                 imagePlaceholder.src = finalsrc  
                 console.log(res) 
