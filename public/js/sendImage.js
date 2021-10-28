@@ -22,11 +22,12 @@ function populateFriendList() {
       })
         .then( res => res.json() )
         .then( res => {
+            console.log(res)
             res.forEach(element => {
                 emailArray.push(element.email)
 
-                    // now emailArray populated
-                //emailDropDown.innerHTML=''
+                // now emailArray populated
+                emailDropDown.innerHTML=''
                 emailArray.forEach( (element)=>{
                 var newOption = document.createElement("option");
                 newOption.value = element
