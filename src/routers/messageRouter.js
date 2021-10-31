@@ -4,6 +4,24 @@ const auth = require('../middleware/auth')
 const router = new express.Router()
 const User = require('../models/user')
 const multer = require('multer')
+
+
+
+
+// This file contains all the API endpoints for messages:
+
+// POST     /messages       saves a new message to the database 
+// GET      /messages       returns the list of all messages to the current user
+// GET      /messages/:id   returns a specific message object based on :id
+// DELETE   /messages/:id   delete message based on :id
+// 
+// --------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 router.post('/messages', auth, async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.recipient })
@@ -85,29 +103,7 @@ router.get('/messages/:id', auth, async (req, res) => {
     }
 })
 
-router.patch('/messages/:id', auth, async (req, res) => {
-    const updates = Object.keys(req.body)
-    const allowedUpdates = ['content']
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
-    if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!' })
-    }
-
-    try {
-        const message = await Message.findOne({ _id: req.params.id, owner: req.user._id})
-
-        if (!message) {
-            return res.status(404).send()
-        }
-
-        updates.forEach((update) => message[update] = req.body[update])
-        await message.save()
-        res.send(message)
-    } catch (e) {
-        res.status(400).send(e)
-    }
-})
 
 router.delete('/messages/:id', auth, async (req, res) => {
     try {
@@ -126,29 +122,4 @@ router.delete('/messages/:id', auth, async (req, res) => {
 
 const upload = multer({ dest: "public/uploads/" });
 
-
-const uploadFiles = async (req, res) => {
-    
-    try {
-        
-        const user = await User.findOne({ email: req.body.recipient })
-        const recipientID = user._id
-        const message = new Message({
-            subject: req.body.subject,
-            content: req.body.content,
-            owner: req.body.owner,
-            recipient:recipientID,
-            image: {path: req.files[0].path}
-        })
-
-        await message.save()
-        res.send(message)
-    } catch (e) {
-        res.status(500).send({ error: 'Could not find recipient in database' })
-    }
-
-
-}
-
-router.post("/upload_files", upload.array("files"), uploadFiles);
 module.exports = router

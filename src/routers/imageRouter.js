@@ -7,10 +7,16 @@ var Image = require('../models/image');
 var multer = require('multer');
 const auth = require('../middleware/auth')
 const User = require('../models/user')
-
 const router = new express.Router()
 
 
+// This file contains all the API endpoints for images:
+
+// POST /sendImage      To send a new image (upload and write to database)
+// GET /image/:id       Returns an image object from the database based on :id. (includes authentication)
+// GET /images          Gets a list of all the images that were sent to the user (also loads sendername in to display it)
+
+// --------------------------------------------------------------------------------------------------
 
 
 var storage = multer.diskStorage({
@@ -44,8 +50,6 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
             console.log('sendImage error');
         }
         else {
-            // item.save();
-            //res.redirect('/imageSendResult');
             res.send('success!')
         }
     });
@@ -54,14 +58,8 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
 // endpoint to return specific image based on id. with authentication
 router.get('/image/:id', auth, async (req, res) => {
     const _id = req.params.id
-
     try {
         const image = await Image.findOne({ _id})
-        // const message = await Message.findOne({$or: [
-        //                                                 {recipient: req.user._id},
-        //                                                 {owner: req.user._id}
-        //                                             ]})
-        
         if (!image) {
             return res.status(404).send()
         }
@@ -114,15 +112,10 @@ router.get('/images', auth, async (req, res) => {
             returnImageList.push(image)
         }
         );
-      
-      
         res.send(returnImageList)
     } catch (e) {
         res.status(500).send()
     }
 })
-
-
-
 
 module.exports = router

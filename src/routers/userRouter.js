@@ -3,6 +3,23 @@ const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
+
+
+// This file contains all the API endpoints for users:
+
+// POST     /users              saves a new user to the database 
+// POST     /users/addfriend    adds a new friend connection
+// POST     /users/login        processes user login attempt (if successful, sends token back)
+// POST     /users/logout       logs out user session (current token only)
+// POST     /users/logoutAll    logs out all sessions for this user (all tokens)
+// GET      /users/me           returns user object of current user
+// GET      /users/friends      returns friends list for current user
+// DELETE   /users/me           delete current user
+// --------------------------------------------------------------------------------------------------
+
+
+
+
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
     try {
@@ -14,8 +31,6 @@ router.post('/users', async (req, res) => {
     }
 })
 router.post('/users/addfriend', auth, async (req, res) => {
-
-
     if (req.user.email == req.body.email){
         res.send({error: "Error: not possible to add yourself as friend"})
     }
@@ -101,24 +116,6 @@ router.get('/users/friends', auth, async (req, res) => {
             })
 
             res.send(returnList)
-})
-
-router.patch('/users/me', auth, async (req, res) => {
-    const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'email', 'password', 'age']
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
-
-    if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!' })
-    }
-
-    try {
-        updates.forEach((update) => req.user[update] = req.body[update])
-        await req.user.save()
-        res.send(req.user)
-    } catch (e) {
-        res.status(400).send(e)
-    }
 })
 
 router.delete('/users/me', auth, async (req, res) => {
