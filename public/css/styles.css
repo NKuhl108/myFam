@@ -20,6 +20,22 @@ td {
     padding: 10px;
 }
 
+.greet td{
+    padding: 0px;
+    
+}
+
+.sendTable td{
+    vertical-align: top;
+}
+.greet{
+    width: 500px;
+    
+}
+.greet td{
+    vertical-align: middle;
+    
+}
 footer {
     color: #888888;
     border-top: 1px solid #eeeeee;
@@ -33,6 +49,10 @@ header {
 }
 input {
     width: 250px;
+}
+#desc{
+    width: 500px;
+    height: 300px;
 }
 
 h1 {

@@ -4,6 +4,7 @@ const hbs = require('hbs')
 const path = require('path')
 var fs = require('fs');
 var Image = require('../models/image');
+var ImageMessage = require('../models/imageMessage');
 var multer = require('multer');
 const auth = require('../middleware/auth')
 const User = require('../models/user')
@@ -12,9 +13,11 @@ const router = new express.Router()
 
 // This file contains all the API endpoints for images:
 
-// POST /sendImage      To send a new image (upload and write to database)
-// GET /image/:id       Returns an image object from the database based on :id. (includes authentication)
-// GET /images          Gets a list of all the images that were sent to the user (also loads sendername in to display it)
+// POST /sendGreetingCard   To send a new greeting card
+// POST /sendImage          To send a new image (upload and write to database)
+// GET /image/:id           Returns an image object from the database based on :id. (includes authentication)
+// GET /images              Gets a list of all the images that were sent to the user (also loads sendername in to display it)
+// GET /greetingCards       Gets a list of all the greeting cards
 
 // --------------------------------------------------------------------------------------------------
 
@@ -32,25 +35,82 @@ var upload = multer({ storage: storage });
 
 
 
+router.post('/sendGreetingCard', auth, async (req, res) => {
+    console.log(req.body)
+    const recipient = await User.findOne({email: req.body.recipient})
+    //var newImageObject = await Image.findOne({_id: req.body.cardId})
+
+  
+
+    // Image.create(newImageObject, (err, item) => {
+    //     if (err) {
+    //         console.log('sendImage error');
+    //     }
+    //     else {
+    //         console.log(item)
+    //         console.log('we are creating a new image now')
+
+
+            var newImageMessageObject = {
+                owner: req.user._id,
+                recipient: recipient._id,
+                name: req.body.name,
+                desc: req.body.desc,
+                imageData: req.body.cardId
+            }
+
+            ImageMessage.create(newImageMessageObject, (err, item) => {
+                if (err) {
+                    console.log('sendImage error');
+                }
+                else {
+        
+
+                    res.send('success!')
+                }
+            });    
+
+
+    //     }
+    // });
+});
+
 router.post('/sendImage', auth, upload.single('image'), async (req, res, next) => {
     const recipient = await User.findOne({email: req.body.recipient})
-
-    var obj = {
-        owner: req.user._id,
-        recipient: recipient._id,
-        name: req.body.name,
-        desc: req.body.desc,
-        img: {
-            data: fs.readFileSync(path.join(__dirname , '..','..','uploads/' + req.file.filename)),
-            contentType: 'image/png'
-        }
+    var newImageObject = {
+        data: fs.readFileSync(path.join(__dirname , '..','..','uploads/' + req.file.filename)),
+        contentType: 'image/png'
     }
-    Image.create(obj, (err, item) => {
+
+
+
+    Image.create(newImageObject, (err, item) => {
         if (err) {
             console.log('sendImage error');
         }
         else {
-            res.send('success!')
+            console.log(item)
+            console.log('we are creating a new image now')
+            var newImageMessageObject = {
+                owner: req.user._id,
+                recipient: recipient._id,
+                name: req.body.name,
+                desc: req.body.desc,
+                imageData: item._id
+            }
+
+            ImageMessage.create(newImageMessageObject, (err, item) => {
+                if (err) {
+                    console.log('sendImage error');
+                }
+                else {
+        
+
+                    res.send('success!')
+                }
+            });    
+
+
         }
     });
 });
@@ -59,15 +119,23 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
 router.get('/image/:id', auth, async (req, res) => {
     const _id = req.params.id
     try {
-        const image = await Image.findOne({ _id})
+        const imageMessage = await ImageMessage.findOne({ _id})
+        
+        if (!imageMessage) {
+            return res.status(404).send()
+        }
+
+        // after imageMessage was retrieved, now get the image that belongs to it      
+        const image = await Image.findOne({_id: imageMessage.imageData})
+ 
         if (!image) {
             return res.status(404).send()
         }
-        res.send({
-            contentType: image.img.contentType, 
-            data: image.img.data.toString('base64'),
-            name: image.name,
-            desc: image.desc
+            res.send({
+            contentType: image.contentType, 
+            data: image.data.toString('base64'),
+            name: imageMessage.name,
+            desc: imageMessage.desc
         })
 
     } catch (e) {
@@ -93,9 +161,11 @@ const fetchAuthorname = async (image) => {
 
 router.get('/images', auth, async (req, res) => {
     returnImageList=[]
-    
+    console.log('ssssssssssssssss')
     try {
+        console.log('trying to populate users image list')
         await req.user.populate('images').execPopulate()
+        console.log('done populating users image list')
 
         await execSequentially(req.user.images, async (item) => {
             const nam = await fetchAuthorname(item)
@@ -113,6 +183,32 @@ router.get('/images', auth, async (req, res) => {
         }
         );
         res.send(returnImageList)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/greetingCards', auth, async (req, res) => {
+    returnImageList=[]
+    try {
+        console.log('trying to populate users image list')
+        await req.user.populate('images').execPopulate()
+        console.log('done populating users image list')
+        const greetingCardImages = await Image.find({isGreetingCard: true})
+        var convertedGreetingCards = []
+
+        greetingCardImages.forEach((card)=>{
+            convertedGreetingCards.push({
+                _id: card._id,
+                contentType: card.contentType, 
+                data: card.data.toString('base64'),
+            })
+        })
+
+        console.log(convertedGreetingCards)
+        
+        res.send(convertedGreetingCards)    
+
     } catch (e) {
         res.status(500).send()
     }

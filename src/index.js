@@ -12,6 +12,7 @@ var fs = require('fs');
 const app = express()
 const port = process.env.PORT // set port to environment variable (also set in Heroku)
 
+// setting up folders for handlebars
 const publicDirectoryPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')

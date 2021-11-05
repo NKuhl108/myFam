@@ -37,6 +37,7 @@ function clearTable() {
 function refreshImages() { 
     // get token from local storage
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
+    
     const inMemoryToken = localstorage_user.token
     fetch('/images',{
         method: "GET",
@@ -47,6 +48,7 @@ function refreshImages() {
       })
         .then( res => res.json() )
             .then( res => {
+                
 
                 messageArea.textContent =''
                 clearTable()

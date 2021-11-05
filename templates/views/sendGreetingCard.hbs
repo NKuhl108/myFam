@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <title>Image Uploading</title>
+    
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+  
+<body>
+    <div class="main-content">
+        {{>header}}
+    <hr>
+    <div>
+        <form action="/sendImage" method="POST" enctype="multipart/form-data">
+            <table class="sendTable">
+                <tr>
+                    <td>
+                        Recipient:
+                    </td>
+                    <td>
+                        <select name="friends" id="friendEmails"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Image Title:
+                    </td>
+                    <td>
+                        <input type="text" id="name" placeholder="Name" 
+                       value="" name="name" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Image Description:
+                    </td>
+                    <td>
+                        <textarea id="desc" name="desc" value="" rows="2" 
+                          placeholder="Description" required></textarea>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        Greeting Card:
+                    </td>
+                    <td id="greetingCell">
+                        <table id="greetingTable" class="greet">
+                    
+                        </table>
+
+
+
+
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <button type="submit">Submit</button>
+                    </td>
+                </tr>
+
+
+                
+
+            </table>
+            
+        </form>
+    </div>
+    </div>
+
+    {{>footer}}
+
+    
+    <script src="/js/sendGreetingCard.js">
+    </script>
+</body>
+  
+</html>

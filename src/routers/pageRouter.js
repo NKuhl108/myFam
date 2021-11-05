@@ -25,6 +25,12 @@ router.get('/sendImage', (req, res) => {
         name: 'Nirmala Kuhl'
     })
 })
+router.get('/sendGreetingCard', (req, res) => {
+    res.render('sendGreetingCard', {
+        title: 'Send Greeting Card',
+        name: 'Nirmala Kuhl'
+    })
+})
 
 router.get('/displayImage/:id', (req, res) => {
     const _id = req.params.id

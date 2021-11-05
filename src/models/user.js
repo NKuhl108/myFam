@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Message = require('./message')
 const Image = require('./image')
+const ImageMessage = require('./imageMessage')
 
 
 const userSchema = new mongoose.Schema({
@@ -59,7 +60,7 @@ userSchema.virtual('messages', {
 })
 
 userSchema.virtual('images', {
-    ref: 'Image',
+    ref: 'ImageMessage',
     localField: '_id',
     foreignField: 'recipient'
 })
