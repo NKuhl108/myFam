@@ -20,6 +20,7 @@ const router = new express.Router()
 
 
 router.get('/sendImage', (req, res) => {
+    
     res.render('sendImage', {
         title: 'Send Image',
         name: 'Nirmala Kuhl'
