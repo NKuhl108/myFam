@@ -42,6 +42,7 @@ registerForm.addEventListener('submit', (e) => {
                     email.value=''
                     password.value=''
                     usernameInput.value=''
+                    window.location.href = '/messageList'
                }
 
             })

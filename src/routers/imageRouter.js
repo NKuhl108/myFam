@@ -36,7 +36,7 @@ var upload = multer({ storage: storage });
 
 
 router.post('/sendGreetingCard', auth, async (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
     const recipient = await User.findOne({email: req.body.recipient})
     //var newImageObject = await Image.findOne({_id: req.body.cardId})
 
@@ -66,7 +66,7 @@ router.post('/sendGreetingCard', auth, async (req, res) => {
                 else {
         
 
-                    res.send('success!')
+                    res.send(newImageMessageObject)
                 }
             });    
 
@@ -89,7 +89,7 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
             console.log('sendImage error');
         }
         else {
-            console.log(item)
+            //console.log(item)
             console.log('we are creating a new image now')
             var newImageMessageObject = {
                 owner: req.user._id,
@@ -101,18 +101,20 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
 
             ImageMessage.create(newImageMessageObject, (err, item) => {
                 if (err) {
-                    console.log('sendImage error');
+                    res.status(500).send('failure!')
                 }
                 else {
-        
-
-                    res.send('success!')
+                    res.status(301).send(newImageMessageObject)
                 }
             });    
 
 
         }
     });
+
+
+
+
 });
 
 // endpoint to return specific image based on id. with authentication

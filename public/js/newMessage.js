@@ -63,17 +63,19 @@ newMessageForm.addEventListener('submit', (e) => {
       
         .then( res => res.json() )
             .then( res => {
-                if (!res.error){
-                    messageOne.textContent = 'Message sent successfully!'
+                console.log(res)
+                if (!res.subject){
 
-                    recipientEmailInput.value=''
-                    subjectInput.value=''
-                    contentInput.value=''
-
+                    messageOne.textContent =res.error   
                 }
                 else{
-                    messageOne.textContent =res.error
+                    
+                    messageOne.textContent = 'Message sent successfully!'
 
+                    // recipientEmailInput.value=''
+                    // subjectInput.value=''
+                    // contentInput.value=''
+                    window.location.href = '/messageList'
                 }
 
             })

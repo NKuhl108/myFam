@@ -6,6 +6,7 @@ const formImage = document.querySelector('#image')
 const emailDropDown = document.querySelector('#friendEmails')
 const greetingTable = document.querySelector('#greetingTable')
 
+const messageOne = document.querySelector('#message-1')
 
 const greetingCell = document.querySelector('#greetingCell')
 
@@ -24,7 +25,6 @@ function populateFriendList() {
       })
         .then( res => res.json() )
         .then( res => {
-            console.log(res)
             res.forEach(element => {
                 emailArray.push(element.email)
 
@@ -136,17 +136,15 @@ sendImageForm.addEventListener('submit', (e) => {
     
       .then( res => res.json() )
           .then( res => {
-            //   if (!res.user){
-            //       messageOne.textContent ="Error registering user"
-            //   }
-            //   else{
-            //       let inMemoryToken = res.token;
-            //       messageOne.textContent ='User ' + ' successfully registered!'
-            //       localStorage.setItem('user', JSON.stringify(res));
-            //       email.value=''
-            //       password.value=''
-            //       usernameInput.value=''
-            //  }
+              if (!res.owner){
+                  messageOne.textContent ="Error registering user"
+              }
+              else{
+                  messageOne.textContent ='User ' + ' successfully registered!'
+
+                  window.location.href = '/imageList'
+
+             }
 
           })
 

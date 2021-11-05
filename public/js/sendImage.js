@@ -5,6 +5,7 @@ const formDescription = document.querySelector('#desc')
 const formImage = document.querySelector('#image')
 const emailDropDown = document.querySelector('#friendEmails')
 
+const messageOne = document.querySelector('#message-1')
 
 
 
@@ -73,9 +74,20 @@ sendImageForm.addEventListener('submit', (e) => {
       })
       .then(response => response.json())
       .then(data => {
-        console.log('sendImage')
+        console.log(data)
+        console.log('no error')
+        if (!data.owner){
+
+            messageOne.textContent =res.error   
+        }
+        else{
+            
+            messageOne.textContent = 'Message sent successfully!'
+            window.location.href = '/imageList'
+        }
       })
       .catch(error => {
+        console.log('error')
         console.log(error)
       })
 

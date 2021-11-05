@@ -35,6 +35,7 @@ loginForm.addEventListener('submit', (e) => {
                     email.value=''
                     password.value=''
                     localStorage.setItem('user', JSON.stringify(res))
+                    window.location.href = '/messageList'
                 }
 
             })
