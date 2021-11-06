@@ -10,8 +10,10 @@ console.log(localstorage_user.user.inmate)
 if (localstorage_user.user.inmate == false){
    
     imageLink.setAttribute('href', '/sendImage');
-    imageLink.innerHTML = 'Send Picture Message'
+    imageLink.innerHTML = 'Send Picture (non-inmates only)'
 }
 else{
     imageLink.remove()
+    const sendImageLinkli = document.querySelector('#sendImageLinkli')
+    sendImageLinkli.remove()
 }

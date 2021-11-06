@@ -40,7 +40,6 @@ router.post('/messages', auth, async (req, res) => {
         res.status(500).send({ error: 'Could not find recipient in database' })
     }
 
-
 })
 // this is needed to modify the return list with author names. need to work with promises here
 function execSequentially (arr, func) {

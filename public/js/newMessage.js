@@ -5,7 +5,6 @@ const contentInput = document.querySelector('#contentInput')
 const messageOne = document.querySelector('#message-1')
 const emailDropDown = document.querySelector('#friendEmails')
 
-
 function populateFriendList() { 
     emailArray=[]
 
@@ -72,9 +71,7 @@ newMessageForm.addEventListener('submit', (e) => {
                     
                     messageOne.textContent = 'Message sent successfully!'
 
-                    // recipientEmailInput.value=''
-                    // subjectInput.value=''
-                    // contentInput.value=''
+
                     window.location.href = '/messageList'
                 }
 

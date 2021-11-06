@@ -7,8 +7,6 @@ const emailDropDown = document.querySelector('#friendEmails')
 
 const messageOne = document.querySelector('#message-1')
 
-
-
 function populateFriendList() { 
     emailArray=[]
 
@@ -55,16 +53,16 @@ sendImageForm.addEventListener('submit', (e) => {
 
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
-
     const file = formImage.files[0]
 
-
+  
     const formData = new FormData()
     formData.append('name', formName.value)
     formData.append('desc', formDescription.value)
     formData.append('recipient', emailDropDown.value)
     formData.append('image', file)
   
+
     fetch('/sendImage', {
         method: 'POST',
         body: formData,

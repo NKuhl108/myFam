@@ -1,7 +1,7 @@
 body {
     color: #333333;
     font-family: arial;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 16px;
 
@@ -9,6 +9,18 @@ body {
     flex-direction: column;
     min-height: 100vh
 }
+#navigation ul
+{
+    margin: 0;
+    padding: 0;
+}
+
+#navigation ul li
+{
+    display:inline;
+    padding: 5px 15px;
+}
+
 
 .main-content {
     flex-grow: 1;
