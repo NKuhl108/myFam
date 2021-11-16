@@ -5,8 +5,8 @@ const router = new express.Router()
 const User = require('../models/user')
 const multer = require('multer')
 
-
-
+var Filter = require('bad-words')
+filter = new Filter()
 
 // This file contains all the API endpoints for messages:
 
@@ -21,15 +21,15 @@ const multer = require('multer')
 
 
 
-
+// POST     /messages       saves a new message to the database
 router.post('/messages', auth, async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.recipient })
         const recipientID = user._id
 
         const message = new Message({
-            subject: req.body.subject,
-            content: req.body.content,
+            subject: filter.clean(req.body.subject),
+            content: filter.clean(req.body.content),
             owner: req.user._id,
             recipient:recipientID
         })
@@ -41,6 +41,13 @@ router.post('/messages', auth, async (req, res) => {
     }
 
 })
+
+
+
+
+
+
+
 // this is needed to modify the return list with author names. need to work with promises here
 function execSequentially (arr, func) {
     return arr.reduce(

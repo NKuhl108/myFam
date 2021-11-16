@@ -9,7 +9,8 @@ var multer = require('multer');
 const auth = require('../middleware/auth')
 const User = require('../models/user')
 const router = new express.Router()
-
+var Filter = require('bad-words')
+filter = new Filter()
 
 // This file contains all the API endpoints for images:
 
@@ -38,24 +39,13 @@ var upload = multer({ storage: storage });
 router.post('/sendGreetingCard', auth, async (req, res) => {
     //console.log(req.body)
     const recipient = await User.findOne({email: req.body.recipient})
-    //var newImageObject = await Image.findOne({_id: req.body.cardId})
-
-  
-
-    // Image.create(newImageObject, (err, item) => {
-    //     if (err) {
-    //         console.log('sendImage error');
-    //     }
-    //     else {
-    //         console.log(item)
-    //         console.log('we are creating a new image now')
 
 
             var newImageMessageObject = {
                 owner: req.user._id,
                 recipient: recipient._id,
-                name: req.body.name,
-                desc: req.body.desc,
+                name: filter.clean(req.body.name),
+                desc: filter.clean(req.body.desc),
                 imageData: req.body.cardId
             }
 
@@ -74,6 +64,8 @@ router.post('/sendGreetingCard', auth, async (req, res) => {
     //     }
     // });
 });
+
+
 
 router.post('/sendImage', auth, upload.single('image'), async (req, res, next) => {
     const recipient = await User.findOne({email: req.body.recipient})
@@ -94,8 +86,8 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
             var newImageMessageObject = {
                 owner: req.user._id,
                 recipient: recipient._id,
-                name: req.body.name,
-                desc: req.body.desc,
+                name: filter.clean(req.body.name),
+                desc: filter.clean(req.body.desc),
                 imageData: item._id
             }
 

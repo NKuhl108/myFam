@@ -7,8 +7,8 @@ const messageRouter = require('./routers/messageRouter')
 const imageRouter = require('./routers/imageRouter')
 const pageRouter = require('./routers/pageRouter')
 var fs = require('fs');
-
-
+var Filter = require('bad-words')
+filter = new Filter();
 const app = express()
 const port = process.env.PORT // set port to environment variable (also set in Heroku)
 
@@ -30,8 +30,11 @@ app.use(userRouter)     //all the user endpoints
 app.use(messageRouter)  //all the message endpoints
 app.use(imageRouter)    // all the image endpoints
 app.use(pageRouter)     // this brings up all the handlebars pages
+console.log('-----------------------------------------------------------------')
 
-
+const mystring = 'asshole'
+console.log(mystring)
+console.log(filter.clean(mystring))
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port)
