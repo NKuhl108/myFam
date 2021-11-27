@@ -32,9 +32,6 @@ app.use(imageRouter)    // all the image endpoints
 app.use(pageRouter)     // this brings up all the handlebars pages
 console.log('-----------------------------------------------------------------')
 
-const mystring = 'asshole'
-console.log(mystring)
-console.log(filter.clean(mystring))
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port)

@@ -8,6 +8,7 @@ const router = new express.Router()
 // GET      /login              Brings up login page
 // GET      /friends            Brings up friends list page
 // GET      /messageList        Brings up message list page
+// GET      /adminMessageList   Brings up message list page
 // GET      /showMessage/:id    Brings up contents of a specific message based on :id (forwards id to client-side javascript)
 // GET      /newMessage         Brings up new message page
 // GET      /imageList          Brings up image list page
@@ -77,6 +78,14 @@ router.get('/showMessage/:id', async (req, res) => {
         name: 'Nirmala Kuhl',
     })
 })
+router.get('/adminShowMessage/:id', async (req, res) => {
+    const _id = req.params.id
+    res.render('adminShowMessage', {
+        title: 'Message',
+        messageId: _id,
+        name: 'Nirmala Kuhl',
+    })
+})
 
 router.get('/imageList', (req, res) => {
     res.render('imageList', {
@@ -87,7 +96,13 @@ router.get('/imageList', (req, res) => {
 
 router.get('/messageList', (req, res) => {
     res.render('messageList', {
-        title: 'MessageList',
+        title: 'Message List',
+        name: 'Nirmala Kuhl'
+    })
+})
+router.get('/adminMessageList', (req, res) => {
+    res.render('adminMessageList', {
+        title: 'Admin Message List',
         name: 'Nirmala Kuhl'
     })
 })

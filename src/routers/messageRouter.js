@@ -12,6 +12,7 @@ filter = new Filter()
 
 // POST     /messages       saves a new message to the database 
 // GET      /messages       returns the list of all messages to the current user
+// GET      /adminMessages  returns ALL messages for admin users
 // GET      /messages/:id   returns a specific message object based on :id
 // DELETE   /messages/:id   delete message based on :id
 // 
@@ -65,6 +66,49 @@ const fetchAuthorname = async (message) => {
     }
 }
 
+router.get('/adminMessages', auth, async (req, res) => {
+
+    returnMessageList=[]
+
+
+    try {
+
+        if (req.user.isAdmin==true){
+
+        
+
+            let messageList = await Message.find()
+
+            for await (const message of messageList){
+                let senderUser = await User.findOne({ _id: message.owner })
+                let recipientUser = await User.findOne({ _id: message.recipient })
+        
+
+
+                const mess = {
+                    _id: message._id,
+                    subject: message.subject,
+                    content: message.content,
+                    owner: message.owner,
+                    authorName: senderUser.name,
+                    recipientName: recipientUser.name,
+                }
+
+                returnMessageList.push(mess)
+                console.log(returnMessageList)
+
+            }
+        }
+
+
+      
+        res.send(returnMessageList)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+
 router.get('/messages', auth, async (req, res) => {
     returnMessageList=[]
     
@@ -97,7 +141,11 @@ router.get('/messages/:id', auth, async (req, res) => {
     const _id = req.params.id
 
     try {
-        const message = await Message.findOne({ _id, recipient: req.user._id })
+        let message = await Message.findOne({ _id, recipient: req.user._id })
+        if(req.user.isAdmin == true){
+            message = await Message.findOne({ _id }) //admin can read any message
+        }
+
         
         if (!message) {
             return res.status(404).send()

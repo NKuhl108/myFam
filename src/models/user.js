@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,//because more restrictive
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,//because more restrictive
+    },
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

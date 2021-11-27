@@ -30,6 +30,10 @@ router.post('/users', async (req, res) => {
         res.status(400).send(e)
     }
 })
+
+
+
+
 router.post('/users/addfriend', auth, async (req, res) => {
     if (req.user.email == req.body.email){
         res.send({error: "Error: not possible to add yourself as friend"})
