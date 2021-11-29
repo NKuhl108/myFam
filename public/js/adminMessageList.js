@@ -5,13 +5,18 @@ const password = document.querySelector('#passwordinput')
 const messageArea = document.querySelector('#messageArea')
 const messageTwo = document.querySelector('#message-2')
 
-function addMessageLink(messageId, messageSubject, messageSender,messageRecipient) { 
+function addMessageLink(messageId, messageSubject, messageSender,messageRecipient,deletedStatus) { 
     var table = document.getElementById("myDynamicTable");
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
     row.insertCell(0).innerHTML= '<a href=/adminShowMessage/'+messageId+'>'+messageSubject+'</a>';
     row.insertCell(1).innerHTML= 'by ' + messageSender;
     row.insertCell(2).innerHTML= 'to ' + messageRecipient;
+    let deletedCode = ''
+    if (deletedStatus == true){
+        deletedCode='<img width="20px" src="/images/trashcan.jpg"></img>'
+    }
+    row.insertCell(3).innerHTML= deletedCode;
    
 }
 
@@ -34,6 +39,7 @@ function clearTable() {
     row.insertCell(0).innerHTML= 'Subject';
     row.insertCell(1).innerHTML= 'Sender';
     row.insertCell(2).innerHTML= 'Recipient';
+    row.insertCell(3).innerHTML= 'Deleted';
 
 }
 
@@ -53,7 +59,12 @@ function refreshMessages() {
                 messageArea.textContent =''
                 clearTable()
                 res.forEach(element => {
-                    addMessageLink(element._id,element.subject,element.authorName,element.recipientName)
+                    console.log(element)
+                    if (element.hasOwnProperty('isDeleted')==false){
+                        element.isDeleted=false
+                    }
+                    console.log(element.isDeleted)
+                    addMessageLink(element._id,element.subject,element.authorName,element.recipientName,element.isDeleted)
                 })
                 if (res.length == 0){
                     addEmptyText()

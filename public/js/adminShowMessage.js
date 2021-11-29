@@ -1,10 +1,13 @@
-const clientForm = document.querySelector('form')
+const deleteForm = document.querySelector('#deleteForm')
+const undeleteForm = document.querySelector('#undeleteForm')
 const email = document.querySelector('#emailinput')
 const password = document.querySelector('#passwordinput')
 const messageArea = document.querySelector('#messageArea')
 const messageTwo = document.querySelector('#message-2')
 const imagearea = document.querySelector('#image')
 const imageArea = document.querySelector('#imagePlaceholder')
+
+let currentMessageId=0
 
 function addSubject(newData) { 
     var table = document.getElementById("myDynamicTable");
@@ -33,7 +36,9 @@ function clearTable() {
         table.removeChild(table.firstChild);
     }
 }
-function loadMessage(messageId) {    
+
+function loadMessage(messageId) { 
+    currentMessageId=messageId   
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
 
@@ -53,4 +58,51 @@ function loadMessage(messageId) {
                 }
             })
 }
+
+
+
+
+deleteForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+ 
+    const localstorage_user = JSON.parse(localStorage.getItem('user'))
+    const inMemoryToken = localstorage_user.token
+
+    fetch('/messages/'+currentMessageId,{
+        method: "DELETE",
+        headers: {  
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + inMemoryToken
+        }
+      })
+      .then( res => {
+            window.location.href = '/adminMessageList'
+      })
+})
+
+undeleteForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+ 
+    const localstorage_user = JSON.parse(localStorage.getItem('user'))
+    const inMemoryToken = localstorage_user.token
+
+    fetch('/messages/'+currentMessageId,{
+        method: "PATCH",
+        headers: {  
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + inMemoryToken
+        }
+      })
+      .then( res => {
+            window.location.href = '/adminMessageList'
+      })
+})
+
+
+
+
+
+
+
+
 

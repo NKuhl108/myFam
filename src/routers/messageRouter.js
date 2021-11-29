@@ -29,8 +29,8 @@ router.post('/messages', auth, async (req, res) => {
         const recipientID = user._id
 
         const message = new Message({
-            subject: filter.clean(req.body.subject),
-            content: filter.clean(req.body.content),
+            subject: req.body.subject,
+            content: req.body.content,
             owner: req.user._id,
             recipient:recipientID
         })
@@ -70,7 +70,7 @@ router.get('/adminMessages', auth, async (req, res) => {
 
     returnMessageList=[]
 
-
+    console.log('a')
     try {
 
         if (req.user.isAdmin==true){
@@ -87,20 +87,20 @@ router.get('/adminMessages', auth, async (req, res) => {
 
                 const mess = {
                     _id: message._id,
-                    subject: message.subject,
-                    content: message.content,
+                    subject: filter.clean(message.subject),
+                    content: filter.clean(message.content),
                     owner: message.owner,
                     authorName: senderUser.name,
                     recipientName: recipientUser.name,
+                    isDeleted: message.isDeleted
                 }
 
                 returnMessageList.push(mess)
-                console.log(returnMessageList)
 
             }
         }
 
-
+        console.log('b')
       
         res.send(returnMessageList)
     } catch (e) {
@@ -120,13 +120,14 @@ router.get('/messages', auth, async (req, res) => {
 
             const mess = {
                 _id: item._id,
-                subject: item.subject,
-                content: item.content,
+                subject: filter.clean(item.subject),
+                content: filter.clean(item.content),
                 owner: item.owner,
                 authorName: nam,
             }
-
-            returnMessageList.push(mess)
+            if (item.isDeleted == false){
+                returnMessageList.push(mess)
+            }
         }
         );
       
@@ -137,6 +138,7 @@ router.get('/messages', auth, async (req, res) => {
     }
 })
 
+
 router.get('/messages/:id', auth, async (req, res) => {
     const _id = req.params.id
 
@@ -146,7 +148,8 @@ router.get('/messages/:id', auth, async (req, res) => {
             message = await Message.findOne({ _id }) //admin can read any message
         }
 
-        
+        message.subject = filter.clean(message.subject)
+        message.content = filter.clean(message.content)
         if (!message) {
             return res.status(404).send()
         }
@@ -158,6 +161,29 @@ router.get('/messages/:id', auth, async (req, res) => {
 })
 
 
+router.delete('/messages/:id', auth, async (req, res) => {
+
+    try { 
+        const messageIdToDelete = req.params.id
+        await Message.updateOne({_id: messageIdToDelete}, {$set: {'isDeleted': true}});
+        res.status(200).send(messageIdToDelete)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+router.patch('/messages/:id', auth, async (req, res) => {
+
+    try { 
+        const messageIdToDelete = req.params.id
+        await Message.updateOne({_id: messageIdToDelete}, {$set: {'isDeleted': false}});
+        res.status(200).send(messageIdToDelete)
+    } catch (e) {
+        res.status(500).send()
+    }
+
+
+
+})
 
 router.delete('/messages/:id', auth, async (req, res) => {
     try {

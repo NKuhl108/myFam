@@ -21,7 +21,6 @@ function populateFriendList() {
       })
         .then( res => res.json() )
         .then( res => {
-            console.log(res)
             res.forEach(element => {
                 emailArray.push(element.email)
 
