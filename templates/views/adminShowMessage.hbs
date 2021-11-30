@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Single Message</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+    <table id="myDynamicTable"  border="1" cellpadding="2" width="500" >
+    </table><br>
+    <form id="deleteForm">
+        <button>Delete Message</button>
+    </form>
+    <br>
+    <form id="undeleteForm">
+        <button>Restore Message</button>
+    </form>
+    </div>
+    {{>footer}}
+
+    <script src="/js/adminShowMessage.js">
+        
+    </script>
+    <script language="javascript">
+        
+        loadMessage("{{messageId}}");
+    </script>
+</body>
+
+</html>

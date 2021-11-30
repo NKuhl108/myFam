@@ -152,10 +152,17 @@ const fetchAuthorname = async (image) => {
         res.status(401).send({ error: 'error' })
     }
 }
+const fetchAuthornameWithId = async (userid) => {
+    try {
+        const author = await User.findOne({_id: userid})
+        return author.name
+    } catch (e) {
+        res.status(401).send({ error: 'error' })
+    }
+}
 
 router.get('/images', auth, async (req, res) => {
     returnImageList=[]
-    console.log('ssssssssssssssss')
     try {
         console.log('trying to populate users image list')
         await req.user.populate('images').execPopulate()
@@ -173,7 +180,10 @@ router.get('/images', auth, async (req, res) => {
                 img: item.img
 
             }
-            returnImageList.push(image)
+            if (item.isDeleted == false){
+                returnImageList.push(image)
+
+            }
         }
         );
         res.send(returnImageList)
@@ -181,6 +191,39 @@ router.get('/images', auth, async (req, res) => {
         res.status(500).send()
     }
 })
+
+
+router.get('/adminImages', auth, async (req, res) => {
+    returnImageList=[]
+    try {
+            if (req.user.isAdmin==true){
+            imageList = await ImageMessage.find()
+            
+            for await (const imageMessage of imageList){
+                
+                const nam = await fetchAuthornameWithId(imageMessage.owner)
+                const rnam = await fetchAuthornameWithId(imageMessage.recipient)
+                const image = {
+                    _id: imageMessage._id,
+                    name: imageMessage.name,
+                    desc: imageMessage.desc,
+                    owner: imageMessage.owner,
+                    authorName: nam,
+                    recipientName: rnam,
+                    img: imageMessage.img,
+                    isDeleted:imageMessage.isDeleted
+
+                }
+                returnImageList.push(image)
+            }
+        }
+        
+        res.send(returnImageList)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 
 router.get('/greetingCards', auth, async (req, res) => {
     returnImageList=[]
@@ -207,5 +250,38 @@ router.get('/greetingCards', auth, async (req, res) => {
         res.status(500).send()
     }
 })
+
+
+
+router.delete('/image/:id', auth, async (req, res) => {
+    console.log("deleting image")
+    try { 
+        if (req.user.isAdmin==true){
+            const imageMessagetoDelete = req.params.id
+            await ImageMessage.updateOne({_id: imageMessagetoDelete}, {$set: {'isDeleted': true}});
+            res.status(200).send(messageIdToDelete)
+        }
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.patch('/image/:id', auth, async (req, res) => {
+    console.log("deleting image")
+    try { 
+        const imageMessagetoDelete = req.params.id
+        await ImageMessage.updateOne({_id: imageMessagetoDelete}, {$set: {'isDeleted': false}});
+        res.status(200).send(messageIdToDelete)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+
+
+
+
+
+
 
 module.exports = router

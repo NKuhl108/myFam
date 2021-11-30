@@ -62,7 +62,6 @@ newMessageForm.addEventListener('submit', (e) => {
       
         .then( res => res.json() )
             .then( res => {
-                console.log(res)
                 if (!res.subject){
 
                     messageOne.textContent =res.error   

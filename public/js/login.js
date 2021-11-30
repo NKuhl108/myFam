@@ -35,7 +35,12 @@ loginForm.addEventListener('submit', (e) => {
                     email.value=''
                     password.value=''
                     localStorage.setItem('user', JSON.stringify(res))
-                    window.location.href = '/messageList'
+                    console.log('adminstatus')
+                    exitLink = '/messageList'
+                    if (res.user.isAdmin == true){
+                        exitLink = '/adminMessageList'
+                    }
+                    window.location.href = exitLink    
                 }
 
             })

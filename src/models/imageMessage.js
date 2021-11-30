@@ -15,6 +15,10 @@ var imageMessageSchema = new mongoose.Schema({
         required: false,
         ref: 'User'
     },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
     imageData: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
