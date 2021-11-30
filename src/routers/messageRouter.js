@@ -72,19 +72,12 @@ router.get('/adminMessages', auth, async (req, res) => {
 
     console.log('a')
     try {
-
         if (req.user.isAdmin==true){
-
-        
-
             let messageList = await Message.find()
-
             for await (const message of messageList){
                 let senderUser = await User.findOne({ _id: message.owner })
                 let recipientUser = await User.findOne({ _id: message.recipient })
-        
-
-
+  
                 const mess = {
                     _id: message._id,
                     subject: filter.clean(message.subject),
@@ -99,9 +92,7 @@ router.get('/adminMessages', auth, async (req, res) => {
 
             }
         }
-
         console.log('b')
-      
         res.send(returnMessageList)
     } catch (e) {
         res.status(500).send()

@@ -105,4 +105,13 @@ if (localstorage_user.user.isAdmin == true){
     li.appendChild(a);
     ul.appendChild(li);
 
+    
+    var li = document.createElement("li");
+    var a = document.createElement('a');
+    var linkText = document.createTextNode("All Picture Messages");
+    a.appendChild(linkText);
+    a.href = "/adminImageList"; //list of all messages from all users
+    li.appendChild(a);
+    ul.appendChild(li);
+
 }

@@ -43,6 +43,16 @@ router.get('/displayImage/:id', (req, res) => {
     })
 })
 
+
+router.get('/adminDisplayImage/:id', (req, res) => {
+    const _id = req.params.id
+    res.render('adminDisplayImage', {
+        title: 'Display Image',
+        imageId: _id,
+        name: 'Nirmala Kuhl'
+    })
+})
+
 router.get('', (req, res) => {
     res.render('login', {
         title: 'Login',
@@ -89,7 +99,14 @@ router.get('/adminShowMessage/:id', async (req, res) => {
 
 router.get('/imageList', (req, res) => {
     res.render('imageList', {
-        title: 'MessageList',
+        title: 'Image List',
+        name: 'Nirmala Kuhl'
+    })
+})
+
+router.get('/adminImageList', (req, res) => {
+    res.render('adminImageList', {
+        title: 'Admin Image List',
         name: 'Nirmala Kuhl'
     })
 })
