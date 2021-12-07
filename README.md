@@ -18,3 +18,4 @@ MONGODB_URL=mongodb://127.0.0.1:27017/my-fam-db
 
 - To start the application, run "npm run dev"
 - Navigate to http://localhost:3000 in your webbrowser
+
