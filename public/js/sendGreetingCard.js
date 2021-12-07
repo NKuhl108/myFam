@@ -136,7 +136,8 @@ sendImageForm.addEventListener('submit', (e) => {
       .then( res => res.json() )
           .then( res => {
               if (!res.owner){
-                  messageOne.textContent ="Error registering user"
+                  //window.alert(res.error);
+                  messageOne.textContent =res.error
               }
               else{
                   messageOne.textContent ='User ' + ' successfully registered!'
@@ -152,22 +153,6 @@ sendImageForm.addEventListener('submit', (e) => {
 
 
 
-
-
-    // fetch('/sendGreetingCard', {
-    //     method: 'POST',
-    //     body: formData,
-    //     headers: {  
-    //         'Authorization': 'Bearer ' + inMemoryToken
-    //     }
-    //   })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log('sendImage')
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
 
 
 

@@ -131,6 +131,13 @@ router.get('/newMessage', (req, res) => {
     })
 })
 
+router.get('/credits', (req, res) => {
+    res.render('credits', {
+        title: 'Credits',
+        name: 'Nirmala Kuhl'
+    })
+})
+
 
 
 

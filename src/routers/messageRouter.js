@@ -19,26 +19,34 @@ filter = new Filter()
 // --------------------------------------------------------------------------------------------------
 
 
-
+const messageCost=1
 
 
 // POST     /messages       saves a new message to the database
 router.post('/messages', auth, async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.body.recipient })
-        const recipientID = user._id
 
-        const message = new Message({
-            subject: req.body.subject,
-            content: req.body.content,
-            owner: req.user._id,
-            recipient:recipientID
-        })
+    if (req.user.credits>=messageCost){
+        await req.user.subtractCredits(messageCost)
+        try {
+            const user = await User.findOne({ email: req.body.recipient })
+            const recipientID = user._id
 
-        await message.save()
-        res.send(message)
-    } catch (e) {
-        res.status(500).send({ error: 'Could not find recipient in database' })
+            const message = new Message({
+                subject: req.body.subject,
+                content: req.body.content,
+                owner: req.user._id,
+                recipient:recipientID
+            })
+
+            await message.save()
+            res.send(message)
+        } catch (e) {
+            res.status(500).send({ error: 'Could not find recipient in database' })
+        }
+    }
+    else{
+        res.status(500).send({ error: 'You dont have enough credits' })
+
     }
 
 })

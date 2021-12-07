@@ -70,6 +70,7 @@ router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
+
         res.send({ user, token })
         
     } catch (e) {
@@ -103,6 +104,10 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
+})
+
+router.get('/users/credits', auth, async (req, res) => {
+    res.send({credits: req.user.credits})
 })
 
 router.get('/users/friends', auth, async (req, res) => {

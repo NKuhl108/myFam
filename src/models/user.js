@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,//because more restrictive
     },
+    credits: {
+        type: Number,
+        default: 5,
+    },
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -62,6 +66,7 @@ userSchema.virtual('messages', {
     localField: '_id',
     foreignField: 'recipient'
 })
+
 
 userSchema.virtual('images', {
     ref: 'ImageMessage',
@@ -93,6 +98,31 @@ userSchema.methods.generateAuthToken = async function () {
     await user.save()
 
     return token
+}
+userSchema.methods.addCredits = async function (additionalCredits) {
+    returnValue = false
+    if (additionalCredits >= 0){
+        const user = this
+        user.credits = user.credits + additionalCredits
+        await user.save()
+        returnValue = true
+    }
+
+
+    return returnValue
+}
+userSchema.methods.subtractCredits = async function (minusCredits) {
+    returnValue = false
+    const user = this
+    if ((minusCredits >= 0) && (user.credits >= minusCredits) ) {
+        
+        user.credits = user.credits - minusCredits
+        await user.save()
+        returnValue = true
+    }
+
+
+    return returnValue
 }
 
 

@@ -23,6 +23,10 @@ filter = new Filter()
 // --------------------------------------------------------------------------------------------------
 
 
+const imageMessageCost=2
+
+
+
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads')
@@ -37,75 +41,87 @@ var upload = multer({ storage: storage });
 
 
 router.post('/sendGreetingCard', auth, async (req, res) => {
-    //console.log(req.body)
-    const recipient = await User.findOne({email: req.body.recipient})
 
 
-            var newImageMessageObject = {
-                owner: req.user._id,
-                recipient: recipient._id,
-                name: filter.clean(req.body.name),
-                desc: filter.clean(req.body.desc),
-                imageData: req.body.cardId
+    if (req.user.credits>=imageMessageCost){
+        req.user.subtractCredits(imageMessageCost)
+
+        const recipient = await User.findOne({email: req.body.recipient})
+
+        var newImageMessageObject = {
+            owner: req.user._id,
+            recipient: recipient._id,
+            name: filter.clean(req.body.name),
+            desc: filter.clean(req.body.desc),
+            imageData: req.body.cardId
+        }
+
+        ImageMessage.create(newImageMessageObject, (err, item) => {
+            if (err) {
+                console.log('sendImage error');
             }
+            else {
+                res.send(newImageMessageObject)
+            }
+        }); 
+    }
+    else{
+        res.status(500).send({ error: 'You don\'t have enough credits' })
 
-            ImageMessage.create(newImageMessageObject, (err, item) => {
-                if (err) {
-                    console.log('sendImage error');
-                }
-                else {
-        
-
-                    res.send(newImageMessageObject)
-                }
-            });    
+    }   
 
 
-    //     }
-    // });
+   
 });
 
 
 
 router.post('/sendImage', auth, upload.single('image'), async (req, res, next) => {
+    
+    
+    if (req.user.credits>=imageMessageCost){
+        req.user.subtractCredits(imageMessageCost)
+    
     const recipient = await User.findOne({email: req.body.recipient})
+    
     var newImageObject = {
         data: fs.readFileSync(path.join(__dirname , '..','..','uploads/' + req.file.filename)),
         contentType: 'image/png'
     }
 
-
-
-    Image.create(newImageObject, (err, item) => {
-        if (err) {
-            console.log('sendImage error');
-        }
-        else {
-            //console.log(item)
-            console.log('we are creating a new image now')
-            var newImageMessageObject = {
-                owner: req.user._id,
-                recipient: recipient._id,
-                name: filter.clean(req.body.name),
-                desc: filter.clean(req.body.desc),
-                imageData: item._id
+        Image.create(newImageObject, (err, item) => {
+            if (err) {
+                console.log('sendImage error');
             }
-
-            ImageMessage.create(newImageMessageObject, (err, item) => {
-                if (err) {
-                    res.status(500).send('failure!')
+            else {
+                //console.log(item)
+                console.log('we are creating a new image now')
+                var newImageMessageObject = {
+                    owner: req.user._id,
+                    recipient: recipient._id,
+                    name: filter.clean(req.body.name),
+                    desc: filter.clean(req.body.desc),
+                    imageData: item._id
                 }
-                else {
-                    res.status(301).send(newImageMessageObject)
-                }
-            });    
+
+                ImageMessage.create(newImageMessageObject, (err, item) => {
+                    if (err) {
+                        res.status(500).send('failure!')
+                    }
+                    else {
+                        res.status(301).send(newImageMessageObject)
+                    }
+                });    
 
 
-        }
-    });
+            }
+        });
 
+    }
+    else{
+        res.status(500).send({ error: 'You dont have enough credits' })
 
-
+    }  
 
 });
 

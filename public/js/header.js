@@ -3,7 +3,6 @@
 
 const imageLink = document.querySelector('#sendImageLink')
 
-
 const localstorage_user = JSON.parse(localStorage.getItem('user'))
 const inMemoryToken = localstorage_user.token
 console.log(localstorage_user.user.inmate)
@@ -83,6 +82,14 @@ if (localstorage_user.user.isAdmin == false){
     li.appendChild(a);
     ul.appendChild(li);
 
+    var li = document.createElement("li");
+    var a = document.createElement('a');
+    var linkText = document.createTextNode("Credits");
+    a.appendChild(linkText);
+    a.href = "/credits";
+    li.appendChild(a);
+    ul.appendChild(li);
+
 }
 
 if (localstorage_user.user.isAdmin == true){
@@ -114,4 +121,14 @@ if (localstorage_user.user.isAdmin == true){
     li.appendChild(a);
     ul.appendChild(li);
 
+    
+
+    var li = document.createElement("li");
+    var a = document.createElement('a');
+    var linkText = document.createTextNode("Credits");
+    a.appendChild(linkText);
+    a.href = "/credits";
+    li.appendChild(a);
+    ul.appendChild(li);
+    
 }

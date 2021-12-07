@@ -72,10 +72,10 @@ sendImageForm.addEventListener('submit', (e) => {
       .then(response => response.json())
       .then(data => {
         console.log(data)
-        console.log('no error')
+    
         if (!data.owner){
 
-            messageOne.textContent =res.error   
+            messageOne.textContent =data.error   
         }
         else{
             
@@ -85,7 +85,7 @@ sendImageForm.addEventListener('submit', (e) => {
       })
       .catch(error => {
         console.log('error')
-        console.log(error)
+
       })
 
 
