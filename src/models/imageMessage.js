@@ -2,6 +2,12 @@
 
 var mongoose = require('mongoose');
 
+
+
+// This file defines the database model for image messages.
+// Note that the image data is not actually part of this data structure.
+// Instead, we just have a reference to the actual "Image"
+
 var imageMessageSchema = new mongoose.Schema({
     
 
@@ -27,7 +33,7 @@ var imageMessageSchema = new mongoose.Schema({
 
     
     name: String,
-    desc: String//,
+    desc: String
 
 });
 module.exports = new mongoose.model('ImageMessage', imageMessageSchema);

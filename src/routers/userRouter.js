@@ -13,13 +13,16 @@ const router = new express.Router()
 // POST     /users/logout       logs out user session (current token only)
 // POST     /users/logoutAll    logs out all sessions for this user (all tokens)
 // GET      /users/me           returns user object of current user
+// GET      /users/credits      returns the credits for the current user
 // GET      /users/friends      returns friends list for current user
 // DELETE   /users/me           delete current user
 // --------------------------------------------------------------------------------------------------
 
 
+// note: most of these functions make use of the "auth" middleware function which automatically checks the toek
+// and also provides access to the current user in req.user
 
-
+// saves a new user to the database
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
     try {
@@ -33,7 +36,7 @@ router.post('/users', async (req, res) => {
 
 
 
-
+// adds a new friend connection
 router.post('/users/addfriend', auth, async (req, res) => {
     if (req.user.email == req.body.email){
         res.send({error: "Error: not possible to add yourself as friend"})
@@ -66,6 +69,8 @@ router.post('/users/addfriend', auth, async (req, res) => {
 
 
 })
+
+// processes user login attempt (if successful, sends token back)
 router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
@@ -79,6 +84,7 @@ router.post('/users/login', async (req, res) => {
 
 })
 
+// logs out user session (current token only)
 router.post('/users/logout', auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
@@ -92,6 +98,7 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 })
 
+//  logs out all sessions for this user (all tokens)
 router.post('/users/logoutAll', auth, async (req, res) => {
     try {
         req.user.tokens = []
@@ -102,14 +109,17 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 })
 
+// returns user object of current user
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
+// returns the credits for the current user
 router.get('/users/credits', auth, async (req, res) => {
     res.send({credits: req.user.credits})
 })
 
+// returns friends list for current user
 router.get('/users/friends', auth, async (req, res) => {
             await req.user.populate('friends').execPopulate()
             let returnList=[]
@@ -127,6 +137,8 @@ router.get('/users/friends', auth, async (req, res) => {
             res.send(returnList)
 })
 
+// delete current user
+// note: this is not used anywhere. Even if a user is deleted, they should probably just be hidden
 router.delete('/users/me', auth, async (req, res) => {
     try {
         await req.user.remove()

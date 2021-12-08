@@ -5,13 +5,11 @@ const User = require('../models/user')
 //cool thing: it also gives us access to this user then.
 const auth = async (req, res, next) => {
     try {
-        //get token from http header
+        // first we grab the token from the incoming HTTP request
         const token = req.header('Authorization').replace('Bearer ', '')
-
-        //check the token
+        // then we check the token
         const decoded = jwt.verify(token, 'thisismycapstone')
-
-        //get the user from the database
+        // now we load this user from the database so we can return it later
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
 
         if (!user) {
@@ -20,8 +18,8 @@ const auth = async (req, res, next) => {
 
         req.token = token
         req.user = user
-        // keep going with the regular route (API endpoint)
-        next()
+        
+        next() // keep going with the next operation. Usually the actual API endpoint that was originally called
     } catch (e) {
         res.status(401).send({ error: 'Please authenticate.' })
     }

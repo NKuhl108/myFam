@@ -6,6 +6,7 @@ const Message = require('./message')
 const Image = require('./image')
 const ImageMessage = require('./imageMessage')
 
+// This is the "User" model which defines how entries for users are stored in the database.
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -61,25 +62,23 @@ const userSchema = new mongoose.Schema({
     }]
 })
 // virtual property to find messages addressed to this user
+// can just populate this on the fly to access it later
 userSchema.virtual('messages', {
     ref: 'Message',
     localField: '_id',
     foreignField: 'recipient'
 })
 
-
+// virtual property to find image messages addressed to this user
 userSchema.virtual('images', {
     ref: 'ImageMessage',
     localField: '_id',
     foreignField: 'recipient'
 })
-// userSchema.virtual('friendObjects', {
-//     ref: 'User',
-//     localField: '_id',
-//     foreignField: 'owner'
-// })
+
 
 // this function is to hide sensitive content when returning user objects
+// so we don't accidentally send out a (hashed) password or the tokens
 userSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()
@@ -90,6 +89,7 @@ userSchema.methods.toJSON = function () {
     return userObject
 }
 
+// generates new token for the user and adds it to the token list this user has
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'thisismycapstone')
@@ -99,6 +99,8 @@ userSchema.methods.generateAuthToken = async function () {
 
     return token
 }
+
+// adds credits to this user account
 userSchema.methods.addCredits = async function (additionalCredits) {
     returnValue = false
     if (additionalCredits >= 0){
@@ -107,10 +109,10 @@ userSchema.methods.addCredits = async function (additionalCredits) {
         await user.save()
         returnValue = true
     }
-
-
     return returnValue
 }
+
+// subtracts credits from this user account
 userSchema.methods.subtractCredits = async function (minusCredits) {
     returnValue = false
     const user = this
@@ -120,12 +122,10 @@ userSchema.methods.subtractCredits = async function (minusCredits) {
         await user.save()
         returnValue = true
     }
-
-
     return returnValue
 }
 
-
+// this helper function is used during log in to find a user in the databse
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
 
@@ -150,7 +150,7 @@ userSchema.pre('save', async function (next) {
         user.password = await bcrypt.hash(user.password, 8)
     }
 
-    next()
+    next() // keep going with the next regular operation
 })
 
 // Delete user messages when user is removed
