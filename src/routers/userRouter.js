@@ -1,6 +1,7 @@
 const express = require('express')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
+const { default: Stripe } = require('stripe')
 const router = new express.Router()
 
 
@@ -22,6 +23,47 @@ const router = new express.Router()
 // note: most of these functions make use of the "auth" middleware function which automatically checks the toek
 // and also provides access to the current user in req.user
 
+const creditPurchaseAmout = 10
+const stripe = require('stripe')(process.env.stripeSecretKey)
+
+
+
+// process payment here
+router.post('/charge', async (req, res) => {
+
+    const userObject = await User.findOne({email: req.body.stripeEmail})
+
+    if (userObject){
+        const amount = creditPurchaseAmout*100;
+        
+        stripe.customers.create({
+        email: req.body.stripeEmail,
+        source: req.body.stripeToken
+        })
+        .then(customer => stripe.charges.create({
+            amount,
+            description: 'MyFam credits',
+            currency: 'usd',
+            customer: customer.id 
+        }))
+        .then(charge => {
+            //now make sure to save the new credits to user account
+            userObject.credits = userObject.credits+creditPurchaseAmout
+            userObject.save()
+            console.log('purchase successful')
+            res.render('successcredit')
+        });
+    }
+    else{
+        res.render('failcredit')
+    }
+
+
+
+
+  });
+
+
 // saves a new user to the database
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
@@ -33,7 +75,6 @@ router.post('/users', async (req, res) => {
         res.status(400).send(e)
     }
 })
-
 
 
 // adds a new friend connection

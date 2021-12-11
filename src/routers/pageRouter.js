@@ -24,7 +24,6 @@ const router = new express.Router()
 
 
 
-
 router.get('', (req, res) => {
     res.render('login', {
         title: 'Login',
@@ -139,25 +138,10 @@ router.get('/displayImage/:id', (req, res) => {
 router.get('/credits', (req, res) => {
     res.render('credits', {
         title: 'Credits',
-        name: 'Nirmala Kuhl'
+        name: 'Nirmala Kuhl',
+        stripePublishableKey: process.env.stripePublishableKey
     })
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

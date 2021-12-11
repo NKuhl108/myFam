@@ -14,18 +14,25 @@
         <form id="refreshForm">
             <button>Refresh</button>
         </form>
-
-        
         <p id="messageArea"></p>
+        <p id="creditarea"></p>
 
-
-    <p id="creditarea"></p>
-
-
-    </div>
+        <form action="/charge" method="POST">
+          <script 
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ stripePublishableKey }}"
+            data-amount="1000"
+            data-name="10 MyFam Credits"
+            data-description="Dummy card: 4242 4242 4242 4242" data-image="/images/myfamlogo.png"
+            data-locale="auto">
+          </script>
+          <script>
+            
+            document.getElementsByClassName('stripe-button-el')[0].style.display='none';
+          </script>
+          <button type="submit">Purchase for $10.00</button>
+        </form>
 
     {{>footer}}
-
     <script src="/js/credits.js"></script>
 </body>
 

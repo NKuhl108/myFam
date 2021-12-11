@@ -25,7 +25,7 @@ function refreshCredits() {
 
 
 
-                creditArea.innerHTML='Credits: '+res.credits
+                creditArea.innerHTML='Currently available credits: '+res.credits
 
 
             })
