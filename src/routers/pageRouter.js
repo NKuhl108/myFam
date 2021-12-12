@@ -6,6 +6,7 @@ const router = new express.Router()
 // GET      /                       Brings up login page 
 // GET      /register               Brings up registration page
 // GET      /login                  Brings up login page
+// GET      /logout                 Brings up logout page
 // GET      /friends                Brings up friends list page
 // GET      /messageList            Brings up message list page
 // GET      /showMessage/:id        Brings up contents of a specific message based on :id (forwards id to client-side javascript)
@@ -42,6 +43,13 @@ router.get('/register', (req, res) => {
 router.get('/login', (req, res) => {
     res.render('login', {
         title: 'Login',
+        name: 'Nirmala Kuhl'
+    })
+})
+
+router.get('/logout', (req, res) => {
+    res.render('logout', {
+        title: 'Logout',
         name: 'Nirmala Kuhl'
     })
 })

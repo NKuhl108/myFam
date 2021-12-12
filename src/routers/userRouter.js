@@ -27,7 +27,6 @@ const creditPurchaseAmout = 10
 const stripe = require('stripe')(process.env.stripeSecretKey)
 
 
-
 // process payment here
 router.post('/charge', async (req, res) => {
 
@@ -160,6 +159,8 @@ router.get('/users/credits', auth, async (req, res) => {
     res.send({credits: req.user.credits})
 })
 
+
+
 // returns friends list for current user
 router.get('/users/friends', auth, async (req, res) => {
             await req.user.populate('friends').execPopulate()
@@ -170,13 +171,13 @@ router.get('/users/friends', auth, async (req, res) => {
                     _id: element._id,
                     name: element.name,
                     email: element.email
-
                 })
 
             })
 
             res.send(returnList)
 })
+
 
 // delete current user
 // note: this is not used anywhere. Even if a user is deleted, they should probably just be hidden
