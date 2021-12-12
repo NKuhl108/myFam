@@ -111,7 +111,14 @@ if (localstorage_user.user.isAdmin == true){
     li.appendChild(a);
     ul.appendChild(li);
 
-    
+    var li = document.createElement("li");
+    var a = document.createElement('a');
+    var linkText = document.createTextNode("Logout");
+    a.appendChild(linkText);
+    a.href = "/logout";
+    li.appendChild(a);
+    ul.appendChild(li);
+
     var li = document.createElement("li");
     var a = document.createElement('a');
     var linkText = document.createTextNode("All Messages");
