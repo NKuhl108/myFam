@@ -113,7 +113,10 @@ router.post('/users/addfriend', auth, async (req, res) => {
 // processes user login attempt (if successful, sends token back)
 router.post('/users/login', async (req, res) => {
     try {
+        //get user from the database
         const user = await User.findByCredentials(req.body.email, req.body.password)
+        //make a new token for this user and then send it back
+        //note: token also gets stored in the token list for this user
         const token = await user.generateAuthToken()
 
         res.send({ user, token })
@@ -127,9 +130,11 @@ router.post('/users/login', async (req, res) => {
 // logs out user session (current token only)
 router.post('/users/logout', auth, async (req, res) => {
     try {
+        //find current token in user's token list and filter it out
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
         })
+        //save user without that token (note: other tokens still work)
         await req.user.save()
 
         res.send()
@@ -141,7 +146,9 @@ router.post('/users/logout', auth, async (req, res) => {
 //  logs out all sessions for this user (all tokens)
 router.post('/users/logoutAll', auth, async (req, res) => {
     try {
+        // delete the token list
         req.user.tokens = []
+        // and now save user to database without any tokens
         await req.user.save()
         res.send()
     } catch (e) {
