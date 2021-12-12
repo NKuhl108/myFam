@@ -25,6 +25,7 @@ function displayLogoutSuccess() {
       })
         .then( ()=>{
             alert("Logout successful");
+            localStorage.clear();
             window.location.href = '/login' 
             }
         )
@@ -45,6 +46,7 @@ logoutAllForm.addEventListener('submit', (e) => {
       })
         .then( ()=>{
             alert("Logout successful");
+            localStorage.clear();
             window.location.href = '/login' 
             }
         )
