@@ -49,7 +49,6 @@ app.use(pageRouter)     // this brings up all the handlebars pages
 
 // now start!
 app.listen(port, () => {
-    console.log(process.env.stripePublishableKey)
     console.log('Server is up on port ' + port)
 })
 

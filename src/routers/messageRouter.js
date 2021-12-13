@@ -72,7 +72,6 @@ const fetchAuthorname = async (message) => {
 // returns ALL messages for admin users
 router.get('/adminMessages', auth, async (req, res) => {
     returnMessageList=[]
-    console.log('a')
     try {
         if (req.user.isAdmin==true){
             let messageList = await Message.find()
@@ -94,7 +93,6 @@ router.get('/adminMessages', auth, async (req, res) => {
 
             }
         }
-        console.log('b')
         res.send(returnMessageList)
     } catch (e) {
         res.status(500).send()

@@ -59,11 +59,9 @@ function refreshMessages() {
                 messageArea.textContent =''
                 clearTable()
                 res.forEach(element => {
-                    console.log(element)
                     if (element.hasOwnProperty('isDeleted')==false){
                         element.isDeleted=false
                     }
-                    console.log(element.isDeleted)
                     addMessageLink(element._id,element.subject,element.authorName,element.recipientName,element.isDeleted)
                 })
                 if (res.length == 0){

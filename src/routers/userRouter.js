@@ -49,7 +49,6 @@ router.post('/charge', async (req, res) => {
             //now make sure to save the new credits to user account
             userObject.credits = userObject.credits+creditPurchaseAmout
             userObject.save()
-            console.log('purchase successful')
             res.render('successcredit')
         });
     }

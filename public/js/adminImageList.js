@@ -14,9 +14,7 @@ function addImageLink(image) {
     row.insertCell(2).innerHTML= 'by ' + image.recipientName;
 
     let deletedCode = ''
-    console.log(image)
     if (image.isDeleted == true){
-        console.log('dddddddddddd')
         deletedCode='<img width="20px" src="/images/trashcan.jpg"></img>'
     }
     row.insertCell(3).innerHTML= deletedCode;

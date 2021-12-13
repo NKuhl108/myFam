@@ -90,8 +90,6 @@ router.post('/sendImage', auth, upload.single('image'), async (req, res, next) =
                 console.log('sendImage error');
             }
             else {
-                //console.log(item)
-                console.log('we are creating a new image now')
                 var newImageMessageObject = {
                     owner: req.user._id,
                     recipient: recipient._id,
@@ -175,9 +173,7 @@ const fetchAuthornameWithId = async (userid) => {
 router.get('/images', auth, async (req, res) => {
     returnImageList=[]
     try {
-        console.log('trying to populate users image list')
         await req.user.populate('images').execPopulate()
-        console.log('done populating users image list')
 
         await execSequentially(req.user.images, async (item) => {
             const nam = await fetchAuthorname(item)
@@ -239,9 +235,7 @@ router.get('/adminImages', auth, async (req, res) => {
 router.get('/greetingCards', auth, async (req, res) => {
     returnImageList=[]
     try {
-        console.log('trying to populate users image list')
         await req.user.populate('images').execPopulate()
-        console.log('done populating users image list')
         const greetingCardImages = await Image.find({isGreetingCard: true})
         var convertedGreetingCards = []
 
@@ -265,7 +259,6 @@ router.get('/greetingCards', auth, async (req, res) => {
 
 // Deletes an image message (just hidden by setting "isDeleted" flag)
 router.delete('/image/:id', auth, async (req, res) => {
-    console.log("deleting image")
     try { 
         if (req.user.isAdmin==true){
             const imageMessagetoDelete = req.params.id
@@ -279,7 +272,6 @@ router.delete('/image/:id', auth, async (req, res) => {
 
 // Undeletes an image message (just hidden by setting "isDeleted" flag)
 router.patch('/image/:id', auth, async (req, res) => {
-    console.log("deleting image")
     try { 
         const imageMessagetoDelete = req.params.id
         await ImageMessage.updateOne({_id: imageMessagetoDelete}, {$set: {'isDeleted': false}});
