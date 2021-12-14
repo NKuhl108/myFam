@@ -1,9 +1,10 @@
 
 const clientForm = document.querySelector('form')
 const email = document.querySelector('#emailinput')
-const password = document.querySelector('#passwordinput')
 const messageArea = document.querySelector('#messageArea')
-const messageTwo = document.querySelector('#message-2')
+
+// This file manages the front end part of displaying the image message list
+
 
 function addImageLink(image) { 
     var table = document.getElementById("myDynamicTable");
@@ -34,6 +35,8 @@ function clearTable() {
     row.insertCell(1).innerHTML= 'Sender';
 
 }
+
+// go to backend "/images" and receive list of image messages the user has
 function refreshImages() { 
     // get token from local storage
     const localstorage_user = JSON.parse(localStorage.getItem('user'))

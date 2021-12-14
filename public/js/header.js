@@ -1,23 +1,22 @@
-// This little javascript file shows the link to send picture messages ONLY to non-inmates
-// (of course in addition we need to check on the backend)
+// This javascript file build up the navigation menu in the header.
+// If no user is logged in, we only see "Register" and "Login"
 
+// If we are an inmate, we don't see the "Send  Picture" Entry (only greeting cards allowed)
+
+// If we are an admin we see the admin menu
+
+// Information is taken from our authentication token (but of course always also checked on backend)
 const imageLink = document.querySelector('#sendImageLink')
-
 const localstorage_user = JSON.parse(localStorage.getItem('user'))
 
 let inMemoryToken = ''
 if(localstorage_user){
     inMemoryToken = localstorage_user.token
-
 }
 
-
 var ul = document.getElementById("list");
-
 if (localstorage_user){
-
     if (localstorage_user.user.isAdmin == false){
-
         var li = document.createElement("li");
         var a = document.createElement('a');
         var linkText = document.createTextNode("Register");
@@ -75,8 +74,6 @@ if (localstorage_user){
         li.appendChild(a);
         ul.appendChild(li);
 
-
-
         if (localstorage_user.user.inmate == false){
             var li = document.createElement("li");
             var a = document.createElement('a');
@@ -86,7 +83,6 @@ if (localstorage_user){
             li.appendChild(a);
             ul.appendChild(li);
         }
-
 
         var li = document.createElement("li");
         var a = document.createElement('a');
@@ -107,8 +103,6 @@ if (localstorage_user){
     }
 
     if (localstorage_user.user.isAdmin == true){
-
-
         var li = document.createElement("li");
         var a = document.createElement('a');
         var linkText = document.createTextNode("Login");
@@ -142,8 +136,6 @@ if (localstorage_user){
         li.appendChild(a);
         ul.appendChild(li);
 
-        
-
         var li = document.createElement("li");
         var a = document.createElement('a');
         var linkText = document.createTextNode("Account/Credits");
@@ -163,7 +155,6 @@ else{
     li.appendChild(a);
     ul.appendChild(li);
 
-    
     var li = document.createElement("li");
     var a = document.createElement('a');
     var linkText = document.createTextNode("Login");

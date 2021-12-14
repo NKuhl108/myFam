@@ -1,11 +1,12 @@
 const refreshForm = document.querySelector('#refreshForm')
 const addForm = document.querySelector('#addForm')
-const email = document.querySelector('#friendEmailInput')
-const password = document.querySelector('#passwordinput')
 const messageArea = document.querySelector('#messageArea')
-const messageTwo = document.querySelector('#message-2')
 const friendNameInput = document.querySelector('#friendNameInput')
+const email = document.querySelector('#friendEmailInput')
+// This file contains front end js code to manage the friends list
 
+
+// this adds a friend to the table
 function addFriendLine(friendID, friendName, friendEmail) { 
     var table = document.getElementById("myDynamicTable");
     var rowCount = table.rows.length;
@@ -22,6 +23,9 @@ function clearTable() {
         table.removeChild(table.firstChild);
     }
 }
+
+// This gets called when page is loaded. No action required.
+// go to backend so we receive our friend list which then gets added to the table with "addFriendLine"
 function refreshFriends() { 
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
@@ -41,8 +45,8 @@ function refreshFriends() {
             })
 }
 
+// This gets called when user 
 function addNewFriend() { 
-
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
 
@@ -61,6 +65,7 @@ function addNewFriend() {
             .then( res => {
                 if(res.error){
                     messageArea.textContent =res.error
+                    alert(res.error)
                 }
                 else{
                     messageArea.textContent =email.value+' added as friend successfully!'

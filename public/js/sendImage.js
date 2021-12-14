@@ -1,10 +1,8 @@
 const sendImageForm = document.querySelector('form')
-
 const formName = document.querySelector('#name')
 const formDescription = document.querySelector('#desc')
 const formImage = document.querySelector('#image')
 const emailDropDown = document.querySelector('#friendEmails')
-
 const messageOne = document.querySelector('#message-1')
 
 function populateFriendList() { 
@@ -41,14 +39,8 @@ function populateFriendList() {
 }
 
 
-
-
-
-
-
 sendImageForm.addEventListener('submit', (e) => {
     e.preventDefault()
-
 
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token

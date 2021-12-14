@@ -4,6 +4,10 @@ const password = document.querySelector('#passwordinput')
 const messageOne = document.querySelector('#message-1')
 const messageTwo = document.querySelector('#message-2')
 
+// This handles the front end part of the login page.
+
+
+//Executed when we click on the login button
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault()
 

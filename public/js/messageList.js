@@ -1,9 +1,11 @@
 
 const clientForm = document.querySelector('form')
-const email = document.querySelector('#emailinput')
-const password = document.querySelector('#passwordinput')
 const messageArea = document.querySelector('#messageArea')
 const messageTwo = document.querySelector('#message-2')
+
+
+// This file manages the front end part of displaying the message list
+
 
 function addMessageLink(messageId, messageSubject, messageSender) { 
     var table = document.getElementById("myDynamicTable");
@@ -34,6 +36,8 @@ function clearTable() {
     row.insertCell(1).innerHTML= 'Sender';
 
 }
+
+// go to backend and get message list
 function refreshMessages() { 
         const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token

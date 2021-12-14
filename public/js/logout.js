@@ -1,10 +1,6 @@
 const logoutOneForm = document.querySelector('#logoutoneform')
 const logoutAllForm = document.querySelector('#logoutallform')
 
-const email = document.querySelector('#emailinput')
-const password = document.querySelector('#passwordinput')
-const messageOne = document.querySelector('#message-1')
-const messageTwo = document.querySelector('#message-2')
 
 function displayLogoutSuccess() {
     alert("Logout successful");

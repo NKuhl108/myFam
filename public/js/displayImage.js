@@ -7,43 +7,14 @@ const imagePlaceholder = document.querySelector('#imagePlaceholder')
 const imageName = document.querySelector('#imageName')
 const imageDescription = document.querySelector('#imageDescription')
 
-function addSubject(newData) { 
-    var table = document.getElementById("myDynamicTable");
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-    row.insertCell(0).innerHTML= 'Subject';
-    row.insertCell(1).innerHTML= newData;
-}
-function addContent(newData) { 
-    var table = document.getElementById("myDynamicTable");
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-    row.insertCell(0).innerHTML= 'Content';
-    row.insertCell(1).innerHTML= newData;
-}
+// This file is responsible for the front end js code to display an image message to regular users
 
-function setimage(image) { 
-    const newpath = '/'+image.path.replace('public\\', '')
-    imageArea.src=newpath
-}
 
-function clearTable() { 
-    var table = document.getElementById("myDynamicTable");
-    while(table.hasChildNodes())
-    {
-        table.removeChild(table.firstChild);
-    }
-}
-function toHexString(byteArray) {
-    return Array.from(byteArray, function(byte) {
-      return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-    }).join('')
-  }
 function loadImage(imageId) {  
 
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
-
+    // here we ask the backend for the actual image message
     fetch('/image/'+imageId,{
         method: "GET",
         headers: {  
