@@ -56,7 +56,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/friends', (req, res) => {
     res.render('friends', {
-        title: 'Friends',
+        title: 'Friends - Only non-inmates can add friends',
         name: 'Nirmala Kuhl'
     })
 })
@@ -79,7 +79,7 @@ router.get('/showMessage/:id', async (req, res) => {
 })
 router.get('/newMessage', (req, res) => {
     res.render('newMessage', {
-        title: 'New Message',
+        title: 'New Message - Cost: 1 credit',
         name: 'Nirmala Kuhl'
     })
 })
@@ -122,7 +122,7 @@ router.get('/sendImage', (req, res) => {
 })
 router.get('/sendGreetingCard', (req, res) => {
     res.render('sendGreetingCard', {
-        title: 'Send Greeting Card',
+        title: 'Send Greeting Card - Cost: 2 credits',
         name: 'Nirmala Kuhl'
     })
 })

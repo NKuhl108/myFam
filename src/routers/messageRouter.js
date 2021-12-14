@@ -27,8 +27,19 @@ router.post('/messages', auth, async (req, res) => {
 
     if (req.user.credits>=messageCost){
         await req.user.subtractCredits(messageCost)
+        let errorMessage=''
         try {
             const user = await User.findOne({ email: req.body.recipient })
+            if (!user){
+                errorMessage='Could not find recipient in database'
+            }
+            if (!req.body.subject){
+                errorMessage='No subject entered'
+            }
+            if (!req.body.content){
+                errorMessage='No message cotent entered'
+            }
+            
             const recipientID = user._id
 
             const message = new Message({
@@ -41,7 +52,7 @@ router.post('/messages', auth, async (req, res) => {
             await message.save()
             res.send(message)
         } catch (e) {
-            res.status(500).send({ error: 'Could not find recipient in database' })
+            res.status(500).send({ error: errorMessage })
         }
     }
     else{

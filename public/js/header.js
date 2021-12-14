@@ -98,7 +98,7 @@ if (localstorage_user){
 
         var li = document.createElement("li");
         var a = document.createElement('a');
-        var linkText = document.createTextNode("Credits");
+        var linkText = document.createTextNode("Account/Credits");
         a.appendChild(linkText);
         a.href = "/credits";
         li.appendChild(a);
@@ -146,7 +146,7 @@ if (localstorage_user){
 
         var li = document.createElement("li");
         var a = document.createElement('a');
-        var linkText = document.createTextNode("Credits");
+        var linkText = document.createTextNode("Account/Credits");
         a.appendChild(linkText);
         a.href = "/credits";
         li.appendChild(a);
