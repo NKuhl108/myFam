@@ -11,42 +11,56 @@ filter = new Filter()
 // This file contains all the API endpoints for messages:
 
 // POST     /messages       saves a new message to the database 
-// GET      /messages       returns the list of all messages to the current user
 // GET      /adminMessages  returns ALL messages for admin users
+// GET      /messages       returns the list of all messages to the current user
 // GET      /messages/:id   returns a specific message object based on :id
 // DELETE   /messages/:id   delete message based on :id
+// PATCH    /messages/:id   used to undelete a message.
 // 
 // --------------------------------------------------------------------------------------------------
 
 
+const messageCost=1
 
-
-
-// POST     /messages       saves a new message to the database
+// saves a new message to the database 
 router.post('/messages', auth, async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.body.recipient })
-        const recipientID = user._id
 
-        const message = new Message({
-            subject: req.body.subject,
-            content: req.body.content,
-            owner: req.user._id,
-            recipient:recipientID
-        })
+    if (req.user.credits>=messageCost){
+        await req.user.subtractCredits(messageCost)
+        let errorMessage=''
+        try {
+            const user = await User.findOne({ email: req.body.recipient })
+            if (!user){
+                errorMessage='Could not find recipient in database'
+            }
+            if (!req.body.subject){
+                errorMessage='No subject entered'
+            }
+            if (!req.body.content){
+                errorMessage='No message cotent entered'
+            }
+            
+            const recipientID = user._id
 
-        await message.save()
-        res.send(message)
-    } catch (e) {
-        res.status(500).send({ error: 'Could not find recipient in database' })
+            const message = new Message({
+                subject: req.body.subject,
+                content: req.body.content,
+                owner: req.user._id,
+                recipient:recipientID
+            })
+
+            await message.save()
+            res.send(message)
+        } catch (e) {
+            res.status(500).send({ error: errorMessage })
+        }
+    }
+    else{
+        res.status(500).send({ error: 'You dont have enough credits' })
+
     }
 
 })
-
-
-
-
-
 
 
 // this is needed to modify the return list with author names. need to work with promises here
@@ -56,7 +70,7 @@ function execSequentially (arr, func) {
         Promise.resolve());
 }
 
-
+// helper function that fetches the author name for a message
 const fetchAuthorname = async (message) => {
     try {
         const author = await User.findOne({_id: message.owner})
@@ -66,11 +80,9 @@ const fetchAuthorname = async (message) => {
     }
 }
 
+// returns ALL messages for admin users
 router.get('/adminMessages', auth, async (req, res) => {
-
     returnMessageList=[]
-
-    console.log('a')
     try {
         if (req.user.isAdmin==true){
             let messageList = await Message.find()
@@ -92,14 +104,13 @@ router.get('/adminMessages', auth, async (req, res) => {
 
             }
         }
-        console.log('b')
         res.send(returnMessageList)
     } catch (e) {
         res.status(500).send()
     }
 })
 
-
+// returns the list of all messages to the current user
 router.get('/messages', auth, async (req, res) => {
     returnMessageList=[]
     
@@ -129,7 +140,7 @@ router.get('/messages', auth, async (req, res) => {
     }
 })
 
-
+// returns a specific message object based on :id
 router.get('/messages/:id', auth, async (req, res) => {
     const _id = req.params.id
 
@@ -151,7 +162,7 @@ router.get('/messages/:id', auth, async (req, res) => {
     }
 })
 
-
+// delete message based on :id (note: just gets hidden by setting "isDeleted" flag)
 router.delete('/messages/:id', auth, async (req, res) => {
 
     try { 
@@ -162,6 +173,8 @@ router.delete('/messages/:id', auth, async (req, res) => {
         res.status(500).send()
     }
 })
+
+// this recovers a previously deleted message
 router.patch('/messages/:id', auth, async (req, res) => {
 
     try { 
@@ -176,21 +189,8 @@ router.patch('/messages/:id', auth, async (req, res) => {
 
 })
 
-router.delete('/messages/:id', auth, async (req, res) => {
-    try {
-        const message = await Message.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
-
-        if (!message) {
-            res.status(404).send()
-        }
-
-        res.send(message)
-    } catch (e) {
-        res.status(500).send()
-    }
-})
-
-
+// set folder for image uploads. They get uploaded and then commited to the database for the future
+// (file not needed anymore after that)
 const upload = multer({ dest: "public/uploads/" });
 
 module.exports = router

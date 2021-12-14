@@ -1,10 +1,13 @@
 const clientForm = document.querySelector('form')
-const email = document.querySelector('#emailinput')
-const password = document.querySelector('#passwordinput')
 const messageArea = document.querySelector('#messageArea')
 const messageTwo = document.querySelector('#message-2')
 const imagearea = document.querySelector('#image')
 const imageArea = document.querySelector('#imagePlaceholder')
+
+
+// This is the front end part of displaying a message 
+
+
 
 function addSubject(newData) { 
     var table = document.getElementById("myDynamicTable");

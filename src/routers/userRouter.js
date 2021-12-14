@@ -1,6 +1,7 @@
 const express = require('express')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
+const { default: Stripe } = require('stripe')
 const router = new express.Router()
 
 
@@ -13,13 +14,55 @@ const router = new express.Router()
 // POST     /users/logout       logs out user session (current token only)
 // POST     /users/logoutAll    logs out all sessions for this user (all tokens)
 // GET      /users/me           returns user object of current user
+// GET      /users/credits      returns the credits for the current user
 // GET      /users/friends      returns friends list for current user
 // DELETE   /users/me           delete current user
 // --------------------------------------------------------------------------------------------------
 
 
+// note: most of these functions make use of the "auth" middleware function which automatically checks the toek
+// and also provides access to the current user in req.user
+
+const creditPurchaseAmout = 10
+const stripe = require('stripe')(process.env.stripeSecretKey)
 
 
+// process payment here
+router.post('/charge', async (req, res) => {
+
+    const userObject = await User.findOne({email: req.body.stripeEmail})
+
+    if (userObject){
+        const amount = creditPurchaseAmout*100;
+        
+        stripe.customers.create({
+        email: req.body.stripeEmail,
+        source: req.body.stripeToken
+        })
+        .then(customer => stripe.charges.create({
+            amount,
+            description: 'MyFam credits',
+            currency: 'usd',
+            customer: customer.id 
+        }))
+        .then(charge => {
+            //now make sure to save the new credits to user account
+            userObject.credits = userObject.credits+creditPurchaseAmout
+            userObject.save()
+            res.render('successcredit')
+        });
+    }
+    else{
+        res.render('failcredit')
+    }
+
+
+
+
+  });
+
+
+// saves a new user to the database
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
     try {
@@ -32,8 +75,7 @@ router.post('/users', async (req, res) => {
 })
 
 
-
-
+// adds a new friend connection
 router.post('/users/addfriend', auth, async (req, res) => {
     if (req.user.email == req.body.email){
         res.send({error: "Error: not possible to add yourself as friend"})
@@ -66,10 +108,16 @@ router.post('/users/addfriend', auth, async (req, res) => {
 
 
 })
+
+// processes user login attempt (if successful, sends token back)
 router.post('/users/login', async (req, res) => {
     try {
+        //get user from the database
         const user = await User.findByCredentials(req.body.email, req.body.password)
+        //make a new token for this user and then send it back
+        //note: token also gets stored in the token list for this user
         const token = await user.generateAuthToken()
+
         res.send({ user, token })
         
     } catch (e) {
@@ -78,11 +126,14 @@ router.post('/users/login', async (req, res) => {
 
 })
 
+// logs out user session (current token only)
 router.post('/users/logout', auth, async (req, res) => {
     try {
+        //find current token in user's token list and filter it out
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
         })
+        //save user without that token (note: other tokens still work)
         await req.user.save()
 
         res.send()
@@ -91,9 +142,12 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 })
 
+//  logs out all sessions for this user (all tokens)
 router.post('/users/logoutAll', auth, async (req, res) => {
     try {
+        // delete the token list
         req.user.tokens = []
+        // and now save user to database without any tokens
         await req.user.save()
         res.send()
     } catch (e) {
@@ -101,10 +155,19 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 })
 
+// returns user object of current user
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
+// returns the credits for the current user
+router.get('/users/credits', auth, async (req, res) => {
+    res.send({credits: req.user.credits})
+})
+
+
+
+// returns friends list for current user
 router.get('/users/friends', auth, async (req, res) => {
             await req.user.populate('friends').execPopulate()
             let returnList=[]
@@ -114,7 +177,6 @@ router.get('/users/friends', auth, async (req, res) => {
                     _id: element._id,
                     name: element.name,
                     email: element.email
-
                 })
 
             })
@@ -122,6 +184,9 @@ router.get('/users/friends', auth, async (req, res) => {
             res.send(returnList)
 })
 
+
+// delete current user
+// note: this is not used anywhere. Even if a user is deleted, they should probably just be hidden
 router.delete('/users/me', auth, async (req, res) => {
     try {
         await req.user.remove()

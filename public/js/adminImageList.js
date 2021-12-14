@@ -1,10 +1,9 @@
-
 const clientForm = document.querySelector('form')
-const email = document.querySelector('#emailinput')
-const password = document.querySelector('#passwordinput')
-const messageArea = document.querySelector('#messageArea')
-const messageTwo = document.querySelector('#message-2')
 
+// This file manages the front end part of displaying the image message list for administrators
+
+
+//add an entry in the table for e ach image message we have access to
 function addImageLink(image) { 
     var table = document.getElementById("myDynamicTable");
     var rowCount = table.rows.length;
@@ -14,9 +13,7 @@ function addImageLink(image) {
     row.insertCell(2).innerHTML= 'by ' + image.recipientName;
 
     let deletedCode = ''
-    console.log(image)
     if (image.isDeleted == true){
-        console.log('dddddddddddd')
         deletedCode='<img width="20px" src="/images/trashcan.jpg"></img>'
     }
     row.insertCell(3).innerHTML= deletedCode;
@@ -58,9 +55,7 @@ function refreshImages() {
       })
         .then( res => res.json() )
             .then( res => {
-                
-
-                messageArea.textContent =''
+                     
                 clearTable()
                 res.forEach(element => {
                     addImageLink(element)

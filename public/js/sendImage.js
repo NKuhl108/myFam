@@ -1,10 +1,8 @@
 const sendImageForm = document.querySelector('form')
-
 const formName = document.querySelector('#name')
 const formDescription = document.querySelector('#desc')
 const formImage = document.querySelector('#image')
 const emailDropDown = document.querySelector('#friendEmails')
-
 const messageOne = document.querySelector('#message-1')
 
 function populateFriendList() { 
@@ -41,14 +39,8 @@ function populateFriendList() {
 }
 
 
-
-
-
-
-
 sendImageForm.addEventListener('submit', (e) => {
     e.preventDefault()
-
 
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
@@ -71,11 +63,10 @@ sendImageForm.addEventListener('submit', (e) => {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
-        console.log('no error')
+    
         if (!data.owner){
 
-            messageOne.textContent =res.error   
+            messageOne.textContent =data.error   
         }
         else{
             
@@ -85,7 +76,7 @@ sendImageForm.addEventListener('submit', (e) => {
       })
       .catch(error => {
         console.log('error')
-        console.log(error)
+
       })
 
 

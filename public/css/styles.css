@@ -60,7 +60,10 @@ header {
     margin-bottom: 48px;
 }
 input {
-    width: 250px;
+    width: 300px;
+}
+textarea {
+    width: 312px;
 }
 #desc{
     width: 500px;

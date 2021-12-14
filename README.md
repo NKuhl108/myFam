@@ -14,7 +14,12 @@ PORT=3000
 
 MONGODB_URL=mongodb://127.0.0.1:27017/my-fam-db
 
+stripePublishableKey = "your stripe public key"
+
+stripeSecretKey = "your stripe secret key"
+
   
 
 - To start the application, run "npm run dev"
 - Navigate to http://localhost:3000 in your webbrowser
+

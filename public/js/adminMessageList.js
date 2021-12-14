@@ -1,10 +1,9 @@
 
 const clientForm = document.querySelector('form')
-const email = document.querySelector('#emailinput')
-const password = document.querySelector('#passwordinput')
-const messageArea = document.querySelector('#messageArea')
-const messageTwo = document.querySelector('#message-2')
 
+// This file manages the front end part of displaying the message list for administrators
+
+// add an entry for each meassage
 function addMessageLink(messageId, messageSubject, messageSender,messageRecipient,deletedStatus) { 
     var table = document.getElementById("myDynamicTable");
     var rowCount = table.rows.length;
@@ -28,6 +27,7 @@ function addEmptyText() {
     row.insertCell(0).innerHTML= 'There are no messages here';
    
 }
+//clears the table
 function clearTable() { 
     var table = document.getElementById("myDynamicTable");
     while(table.hasChildNodes())
@@ -42,10 +42,11 @@ function clearTable() {
     row.insertCell(3).innerHTML= 'Deleted';
 
 }
-
+// this gets called when page gets loaded and does most of the work
 function refreshMessages() { 
         const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
+    //go to backend and ask for message list
     fetch('/adminMessages',{
         method: "GET",
         headers: {  
@@ -56,14 +57,12 @@ function refreshMessages() {
         .then( res => res.json() )
             .then( res => {
 
-                messageArea.textContent =''
+                
                 clearTable()
                 res.forEach(element => {
-                    console.log(element)
                     if (element.hasOwnProperty('isDeleted')==false){
                         element.isDeleted=false
                     }
-                    console.log(element.isDeleted)
                     addMessageLink(element._id,element.subject,element.authorName,element.recipientName,element.isDeleted)
                 })
                 if (res.length == 0){

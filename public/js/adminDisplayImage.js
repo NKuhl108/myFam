@@ -1,53 +1,24 @@
 const clientForm = document.querySelector('form')
 const deleteForm = document.querySelector('#deleteForm')
 const undeleteForm = document.querySelector('#undeleteForm')
-const email = document.querySelector('#emailinput')
-const password = document.querySelector('#passwordinput')
-const messageArea = document.querySelector('#messageArea')
-const messageTwo = document.querySelector('#message-2')
 const imagePlaceholder = document.querySelector('#imagePlaceholder')
 const imageName = document.querySelector('#imageName')
 const imageDescription = document.querySelector('#imageDescription')
 
-let currentImageId=0
+// This is the front end part of displaying an image message to administrators
 
-function addSubject(newData) { 
-    var table = document.getElementById("myDynamicTable");
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-    row.insertCell(0).innerHTML= 'Subject';
-    row.insertCell(1).innerHTML= newData;
-}
-function addContent(newData) { 
-    var table = document.getElementById("myDynamicTable");
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-    row.insertCell(0).innerHTML= 'Content';
-    row.insertCell(1).innerHTML= newData;
-}
 
-function setimage(image) { 
-    const newpath = '/'+image.path.replace('public\\', '')
-    imageArea.src=newpath
-}
+let currentImageId=0 // remember image id here because we need it for operations delete/restore
 
-function clearTable() { 
-    var table = document.getElementById("myDynamicTable");
-    while(table.hasChildNodes())
-    {
-        table.removeChild(table.firstChild);
-    }
-}
-function toHexString(byteArray) {
-    return Array.from(byteArray, function(byte) {
-      return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-    }).join('')
-  }
+
+// This function gets called form the handlebars file. We pass the image id
 function loadImage(imageId) {  
     currentImageId=imageId
+    //get local token so we can put it into the header of the request we send to the backend
     const localstorage_user = JSON.parse(localStorage.getItem('user'))
     const inMemoryToken = localstorage_user.token
 
+    // now get that image from the database
     fetch('/image/'+imageId,{
         method: "GET",
         headers: {  
@@ -57,6 +28,7 @@ function loadImage(imageId) {
       })
         .then( res => res.json() )
             .then( res => {
+                //after getting image data back, display image by putting it straight into the <img> tag like this here:
                 const finalsrc = "data:"+res.contentType+";base64,"+res.data
                 imagePlaceholder.src = finalsrc  
                 imageName.textContent =res.name
@@ -67,7 +39,8 @@ function loadImage(imageId) {
 
 
 
-
+//this happens when admin presses delete. Send HTTP "DELETE" request to backend
+//->backend sets 'isDeleted' property
 deleteForm.addEventListener('submit', (e) => {
     e.preventDefault()
  
@@ -86,6 +59,8 @@ deleteForm.addEventListener('submit', (e) => {
       })
 })
 
+//this happens when admin presses restore
+//->backend sets 'isDeleted' property
 undeleteForm.addEventListener('submit', (e) => {
     e.preventDefault()
  

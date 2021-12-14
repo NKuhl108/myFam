@@ -64,12 +64,13 @@ newMessageForm.addEventListener('submit', (e) => {
             .then( res => {
                 if (!res.subject){
 
-                    messageOne.textContent =res.error   
+                    messageOne.textContent =res.error 
+                    alert(res.error );  
                 }
                 else{
                     
                     messageOne.textContent = 'Message sent successfully!'
-
+                        
 
                     window.location.href = '/messageList'
                 }

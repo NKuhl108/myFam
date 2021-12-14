@@ -1,13 +1,10 @@
 const sendImageForm = document.querySelector('form')
-
 const formName = document.querySelector('#name')
 const formDescription = document.querySelector('#desc')
 const formImage = document.querySelector('#image')
 const emailDropDown = document.querySelector('#friendEmails')
 const greetingTable = document.querySelector('#greetingTable')
-
 const messageOne = document.querySelector('#message-1')
-
 const greetingCell = document.querySelector('#greetingCell')
 
 
@@ -57,16 +54,11 @@ function addGreetingCard(image){
     radioString='checked="checked"'
   }
 
-
   row.insertCell(0).innerHTML= '<input type="radio" name="selectedCard" value="'+image._id+'" '+radioString+'>';
   row.insertCell(1).innerHTML= newImageString;
-
-
-
 }
 
 function populateImageList() { 
-
 
   const localstorage_user = JSON.parse(localStorage.getItem('user'))
   const inMemoryToken = localstorage_user.token
@@ -91,8 +83,6 @@ function populateImageList() {
         })
 
 }
-
-
 
 
 
@@ -136,7 +126,8 @@ sendImageForm.addEventListener('submit', (e) => {
       .then( res => res.json() )
           .then( res => {
               if (!res.owner){
-                  messageOne.textContent ="Error registering user"
+                  //window.alert(res.error);
+                  messageOne.textContent =res.error
               }
               else{
                   messageOne.textContent ='User ' + ' successfully registered!'
@@ -146,31 +137,6 @@ sendImageForm.addEventListener('submit', (e) => {
              }
 
           })
-
-
-
-
-
-
-
-
-    // fetch('/sendGreetingCard', {
-    //     method: 'POST',
-    //     body: formData,
-    //     headers: {  
-    //         'Authorization': 'Bearer ' + inMemoryToken
-    //     }
-    //   })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log('sendImage')
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
-
-
-
 
 })
 

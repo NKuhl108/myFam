@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const User = require('./user')
 
+// This file defines the "Message" model for the database and determines how messages are saved.
+// this is pretty straight-forward because we don't have any functions here
 const messageSchema = new mongoose.Schema({
     subject: {
         type: String,
